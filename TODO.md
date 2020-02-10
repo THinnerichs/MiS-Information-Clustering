@@ -3,6 +3,10 @@
 - Read paper from Guido on [unique information](https://arxiv.org/abs/1709.07487)
 
 - Get MPI mail to work :)
-- Where to eat? Quick run through the building? @ Pradeep?
+
+- Read papers from Pradeep:
+  - [Deep Infomax](https://arxiv.org/pdf/1808.06670.pdf)
+  - [Critics to it](https://arxiv.org/abs/1907.13625)
+  - A more recent theoretical [paper by Merkh and Guido](https://arxiv.org/abs/1906.05460) is here on maximizers of the factorized mutual information
 
 ## Thoughts so far
