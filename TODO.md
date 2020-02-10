@@ -3,6 +3,6 @@
 - Read paper from Guido on [unique information](https://arxiv.org/abs/1709.07487)
 
 - Get MPI mail to work :)
-- Where to eat? Quick run through the building?
+- Where to eat? Quick run through the building? @ Pradeep?
 
 ## Thoughts so far
