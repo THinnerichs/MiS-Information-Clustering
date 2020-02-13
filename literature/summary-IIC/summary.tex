@@ -19,7 +19,7 @@
 
 \maketitle
 \section{Clustering}
-Clustering algorithms are a group of algorithms for the exploration of similarity structures among datasets. It aims on identifying groups within the data, that are somehow similar to each other. As no additional data is used, these are classified as unsupervised learning methods. Crucially, these so called clusters do not have any label, are only based on the underlying information of each data point. In general, whether a clustering is good or bad can only be determined by an expert, or ground truth. Alternatively, quality of clusters can be measured by various dataset independent measures, e.g., average radius of the clusters and distance between different clusters. The various algorithms differ in their interpretation of similarity. \\
+Clustering algorithms are a group of algorithms for the exploration of similarity structures among datasets. It aims on identifying groups within the data, that are somehow similar to each other. As no additional data is used, these are classified as unsupervised learning methods. Crucially, these so called clusters do not have any label, are only based on the underlying information of each data point. In general, whether a clustering is good or bad can only be determined by an expert, or ground truth. Alternatively, quality of clusters can be measured by various dataset independent measures, e.g., average r adius of the clusters and distance between different clusters. The various algorithms differ in their interpretation of similarity. \\
 \section{k-means-clustering}
 k-means is one of the simplest and widely known clustering algorithms and shall thus be explained here briefly. $k$ hereby defines the number of clusters.\\
 The steps are the following:
@@ -38,13 +38,42 @@ Find the set of parameters $\psi$, such that the mutual information, $\mathcal{I
 \subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax (DIM)}
 \begin{itemize}
 	\item incorporate knowledge about locality in the input significantly improves performance in downstream tasks
-	\item DIM simultaneously estimates and maximiizes the mutual inforamtion between input data and learned high-level representations
+	\item DIM simultaneously estimates and maximizes the mutual information between input data and learned high-level representations
 \end{itemize} 
+
+The authors present various techniques to estimate the MI, eventually deciding for the Noise-Contrastive Estimation (infoNCE).\\
+
+Deep Infomax consists of three parts
+\begin{enumerate}
+	\item global, and
+	\item local MI maximization, and
+	\item prior matching
+\end{enumerate}
+
+Just use Figure 2 for explanation of the setup.\\
+Setup:
+\begin{itemize}
+	\item Convolution to obtain best global feature
+	\item First global discriminator tries to distinguish between global + $M \times M$ matrix fake/real
+	\item Second local discriminator tries to distinguish between local + $M \times M$ matrix fake/real for each segment each!!
+	\item Third discriminator was trained to estimate the divergence from a prior distribution with some property
+\end{itemize}
+
+Drawbacks:
+\begin{itemize}
+	\item Only applicable on images
+	\item Needs preprocessing creating the images features
+	\item needs k-means after representation calculation -> prone to degeneration
+\end{itemize}
 
 
 \subsection{On Mutual Information Maximization for Representation Learning}
 
 \subsection{Invariant Information Clustering}
-
+Benefits:
+\begin{itemize}
+	\item Only reliant on the information itself
+	\item 
+\end{itemize}
 
 \end{document}
