@@ -45,4 +45,3 @@ What papers to include:
 - What is DeepInfomax -> issues and method
 - How does IIC fix this issue
 - Critics to plain maximization of MI
-
