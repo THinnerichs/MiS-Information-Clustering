@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.2.7)  13 FEB 2020 16:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.2.7)  13 FEB 2020 18:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -553,42 +553,60 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 24.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 24.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 40.
+
+Overfull \hbox (0.44174pt too wide) in paragraph at lines 34--38
+\OT1/cmr/m/n/10 Let $\OMS/cmsy/m/n/10 X\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 Y$ \
+OT1/cmr/m/n/10 be the domain and the range of a continuous and (almost everywhe
+re) differentiable parametric
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
+0.
+(/usr/share/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 40.
+
+Overfull \hbox (9.25575pt too wide) in paragraph at lines 40--41
+[]\OT1/cmr/m/n/10 incorporate knowledge about locality in the input significant
+ly improves performance in downstream
+ []
+
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 40.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 50.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 50.
  (./summary.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 40.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 40.
-
-
-Package rerunfilecheck Warning: File `summary.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `summary.out':
-(rerunfilecheck)             Before: A6D5721DD16D0F483DA870C46862BBD6;377
-(rerunfilecheck)             After:  134EDEBB5E68BA6AA8E7990E4FE8901F;488.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 40.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 50.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 50.
+Package rerunfilecheck Info: File `summary.out' has not changed.
+(rerunfilecheck)             Checksum: FE060A5EF57E960808D31542765A11A5;496.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 50.
  ) 
 Here is how much of TeX's memory you used:
- 18425 strings out of 492167
- 357229 string characters out of 6131559
- 571289 words of memory out of 5000000
- 22689 multiletter control sequences out of 15000+600000
- 536638 words of font info for 38 fonts, out of 8000000 for 9000
+ 18460 strings out of 492167
+ 358167 string characters out of 6131559
+ 572289 words of memory out of 5000000
+ 22719 multiletter control sequences out of 15000+600000
+ 536984 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 52i,18n,71p,763b,399s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 52i,18n,71p,763b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r17.pfb>
-Output written on summary.pdf (1 page, 64189 bytes).
+ts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/share/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on summary.pdf (2 pages, 123526 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
- 11 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 91 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
+ 12 named destinations out of 1000 (max. 500000)
+ 49 words of extra memory for PDF output out of 10000 (max. 10000000)
 

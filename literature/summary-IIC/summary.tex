@@ -31,10 +31,20 @@ The steps are the following:
 Repeat steps 2 and 3 until the means are not changing anymore or within a certain margin.
 
 \section{Discussed papers}
-\subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax}
+When trying to find a suitable representation, we are trying to have as much information from the input within the output, i.e. loose as little information from the input as possible. Thus, the \textit{transinformation} or \textit{mutual information} (MI) has to be maximized also known as the infomax principle (Linsker, 1988). Hence, making MI the objective function for representation learning seems to be a suitable approach. However,  mutual information is generally quite difficult to compute, especially in continuous and high dimensional settings.\\
+Let $\mathcal{X}, \mathcal{Y}$ be the domain and the range of a continuous and (almost everywhere) differentiable parametric function
+$E_\psi:\mathcal{X}\rightarrow\mathcal{Y}$ with parameters $\psi$. Additionally, let $\mathcal{E}_\Psi=\{E_\psi\}_{\psi\in\Psi}$ over $\Psi$. \\
+Find the set of parameters $\psi$, such that the mutual information, $\mathcal{I}(X;E_\psi(X))$ is maximized. Ideally the marginal distribution induced by forwarding samples from the empirical distribution for a given $\psi$ should match a prior distribution, thus encouraging the output of the encoder to have desired characteristics, e.g., independence.
+\subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax (DIM)}
+\begin{itemize}
+	\item incorporate knowledge about locality in the input significantly improves performance in downstream tasks
+	\item DIM simultaneously estimates and maximiizes the mutual inforamtion between input data and learned high-level representations
+\end{itemize} 
+
 
 \subsection{On Mutual Information Maximization for Representation Learning}
 
 \subsection{Invariant Information Clustering}
+
 
 \end{document}

@@ -45,3 +45,10 @@ What papers to include:
 - What is DeepInfomax -> issues and method
 - How does IIC fix this issue
 - Critics to plain maximization of MI
+
+
+- Prior matching? (DIM paper)
+- Discriminator function? for DIM paper
+- Joint probability?
+
+
