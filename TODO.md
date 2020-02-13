@@ -9,7 +9,40 @@
   - A more recent theoretical [paper by Merkh and Guido](https://arxiv.org/pdf/1906.05460.pdf) is here on maximizers of the factorized mutual information
 
   - [Deep image prior](https://sites.skoltech.ru/app/data/uploads/sites/25/2018/04/deep_image_prior.pdf)
-  - Tuesday or Wednesday small presentation
 
+## Ideas for presentation:
+- What to focus on?
+  - summarize abstract of paper
+  - thesis 
+    - Aim & goal
+    - what issues are solved?
+  - methodology
+  - what kind of data analysis?
+  - briefly lsit results
+  - short summary of discussion
+  - see conclusion of paper
+See [this link for more information](https://tipsforresearchpapersandessays.blogspot.com/2008/10/how-to-summarize-research-paper.html)
 
-## Thoughts so far
+- introduce K-means as well 
+
+1. What is clustering? Problem description? Toy example?
+2. Explain k-means
+3. Present idea of DeepInfomax
+4. Critics to it
+5. Methodology of Invariant paper
+
+## Ideas for summary:
+What papers to include:
+  - Deep Infomax
+  - Critics on MI maximization
+  - Invariant Information Clustering (IIC)
+  (- Deep Image Prior)
+  - Relation to [co-clustering](https://www.cs.utexas.edu/users/inderjit/public_papers/kdd_cocluster.pdf)
+
+- What is clustering and why to use it?
+- Drawbacks of classical clustering algorithms
+- How to use Mutual Information for clustering
+- What is DeepInfomax -> issues and method
+- How does IIC fix this issue
+- Critics to plain maximization of MI
+
