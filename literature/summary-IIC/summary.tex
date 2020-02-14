@@ -10,7 +10,7 @@
 	headsepline = true
 }
 \ihead{Tilman Hinnerichs}
-\ohead{Summary on the topic of Maximization of Mutual Information for Information Clustering}
+\ohead{Maximization of Mutual Information for Information Clustering}
 %opening
 \title{Summary on the topic of Maximization of Mutual Information for Information Clustering}
 \author{Tilman Hinnerichs}
@@ -32,11 +32,13 @@ Repeat steps 2 and 3 until the means are not changing anymore or within a certai
 
 \section{Discussed papers}
 When trying to find a suitable representation, we are trying to have as much information from the input within the output, i.e. loose as little information from the input as possible. Thus, the \textit{transinformation} or \textit{mutual information} (MI) has to be maximized also known as the infomax principle (Linsker, 1988). Hence, making MI the objective function for representation learning seems to be a suitable approach. However,  mutual information is generally quite difficult to compute, especially in continuous and high dimensional settings.\\
-Let $\mathcal{X}, \mathcal{Y}$ be the domain and the range of a continuous and (almost everywhere) differentiable parametric function
+Let $\mathcal{X}, \mathcal{Y}$ be the domain and the range of a (continuous and (almost everywhere) differentiable) parametric function
 $E_\psi:\mathcal{X}\rightarrow\mathcal{Y}$ with parameters $\psi$. Additionally, let $\mathcal{E}_\Psi=\{E_\psi\}_{\psi\in\Psi}$ over $\Psi$. \\
-Find the set of parameters $\psi$, such that the mutual information, $\mathcal{I}(X;E_\psi(X))$ is maximized. Ideally the marginal distribution induced by forwarding samples from the empirical distribution for a given $\psi$ should match a prior distribution, thus encouraging the output of the encoder to have desired characteristics, e.g., independence.
+
 \subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax (DIM)}
+Find the set of parameters $\psi$, such that the mutual information, $\mathcal{I}(X;E_\psi(X))$ is maximized. Ideally the marginal distribution induced by forwarding samples from the empirical distribution for a given $\psi$ should match a prior distribution, thus encouraging the output of the encoder to have desired characteristics, e.g., independence.
 \begin{itemize}
+	\item maximizes information between spatially-preserved features and compact features
 	\item incorporate knowledge about locality in the input significantly improves performance in downstream tasks
 	\item DIM simultaneously estimates and maximizes the mutual information between input data and learned high-level representations
 \end{itemize} 
@@ -49,6 +51,7 @@ Deep Infomax consists of three parts
 	\item local MI maximization, and
 	\item prior matching
 \end{enumerate}
+$\rightarrow$ Formula for goal and MI\\
 
 Just use Figure 2 for explanation of the setup.\\
 Setup:
@@ -64,8 +67,9 @@ Drawbacks:
 	\item Only applicable on images
 	\item Needs preprocessing creating the images features
 	\item needs k-means after representation calculation -> prone to degeneration
+	\item calculates over continuous random variables, which requires complex estimators
+	\item DeepInfomax estimator reduces to entropy
 \end{itemize}
-
 
 \subsection{On Mutual Information Maximization for Representation Learning}
 
@@ -73,7 +77,30 @@ Drawbacks:
 Benefits:
 \begin{itemize}
 	\item Only reliant on the information itself
-	\item 
+	\item Range is discrete $\rightarrow$ exact calculation of MI
 \end{itemize}
+Two issues:
+\begin{itemize}
+	\item Degeneracy of clustering $\rightarrow$ e.g. as with k-means
+	\item Noisy data with unknown or distractor classes (e.g. STL10)
+\end{itemize}
+Content:
+\begin{itemize}
+	\item semantic clustering vs. representation learning
+	\item theoretical foundations of IIC in statistical learning
+\end{itemize}
+\begin{itemize}
+	\item Set state of the art performance on various dataset
+\end{itemize}
+
+Let $x, x' \in \mathcal{X}$ be paired data sample from a joint probability distribution $P(x,x')$, e.g., two images containing the same image. We now want to maximize the mutual information between representation of similar entities.\\
+Goal is to make representations of paired samples the same, which is not the same as minimizing representation distance.\\
+Representation space: $\mathcal{Y} = \{1,\dots,C\}$\\
+Introduce notation: $P(z=c|x) = E_{\psi,c} \in [0,1]^C$\\
+Now consider a pair of such  cluster assignment variables $z, z'$ for two inputs $x,x'$. Their conditional joint distribution is given by $P(z=c, z'=c'|x,x') = E_{\psi,c}(x) \cdot E_{\psi,c'}(x)$ (This states that $z, z'$ are independent given inputs $x,x'$, which is generally not the case)\\
+Build matrix $\mathbf{P}$\\
+Why degenerate solutions are avoided: $I(z,z') = H(z) - H(z|z')$ ($H(z)$ maximized when all equally likely to happen, $H(z|z')$ is $0$ when assignments are exactly predictable from each other. This encourages deterministic one-hot predictions\\
+For image clustering no labels available. Thus, objective becomes: $max_\psi\mathcal{I}(E_\psi(X),E_\psi(gx)))$
+
 
 \end{document}

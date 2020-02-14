@@ -50,5 +50,7 @@ What papers to include:
 - Prior matching? (DIM paper)
 - Discriminator function? for DIM paper
 - Joint probability?
+- IIC principle is equivalent to distilling their shared abstract content (co-clustering)
+- IMSAT
 
 
