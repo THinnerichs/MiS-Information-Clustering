@@ -53,4 +53,20 @@ What papers to include:
 - IIC principle is equivalent to distilling their shared abstract content (co-clustering)
 - IMSAT
 
+- Read paper on Adam
+- See image of blackboard
+- Wasserstein kernel for diffusion -
+- see whether model or dependent function is cause for smoothness and power of IIC
+  - Utilize very simple model for encoding -> see what happens
+
+- In order to to experiments:
+  - get IIC to run on some non-image dataset -> Iris dataset?
+  - For perturbation:
+    - Check some odd perturbations -> How good are they?
+    - Use normal Gaussian as noise
+    - Check Wasserstein (Or whatever hsi name is) diffusion kernel 
+    - Maybe then try to perturbate some image dataset
+  - For model testing:
+    - Get simple non-image dataset
+    - get very simple neural classification algorithm (Guidos Idea) and check whether results come from model or MI
 

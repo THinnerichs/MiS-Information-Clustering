@@ -9,5 +9,10 @@
     - Neural dependency measure (NDM) (based on Brakel & Benngio, 2017)
   - representation usable and suitable for many different classification tasks
   
+Critics paper
 - [On mutual inforamtion maximization for representations learning](https://arxiv.org/pdf/1907.13625.pdf)
 
+- [Computing the Unique information](https://arxiv.org/pdf/1709.07487.pdf)
+- [Factoized Mututal Information Maximization](https://arxiv.org/abs/1906.05460)
+- [Deep image prior](https://sites.skoltech.ru/app/data/uploads/sites/25/2018/04/deep_image_prior.pdf)
+- [Mutual information Neural Estimation](https://arxiv.org/pdf/1801.04062.pdf)
