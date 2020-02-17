@@ -1,9 +1,15 @@
 from __future__ import print_function
 
-import sys
-from os.path import dirname
-sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/code/'))
-print(sys.path)
+# import sys
+# from os.path import dirname
+# sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/code/'))
+# print(sys.path)
+
+import os, sys, inspect
+# realpath() will make your script run, even if you symlink it :)
+cmd_folder = os.path.realpath(os.path.dirname(inspect.getfile( inspect.currentframe())))
+if cmd_folder not in sys.path:
+  sys.path.insert(0, cmd_folder)
 
 import argparse
 import itertools
@@ -33,7 +39,6 @@ from code.utils.cluster.IID_losses import IID_loss
   Train and test script (greyscale datasets).
   Network has one output head only.
 """
-
 
 # Options ----------------------------------------------------------------------
 
@@ -212,7 +217,7 @@ fig, axarr = plt.subplots(4, sharex=False, figsize=(20, 20))
 
 # Train ------------------------------------------------------------------------
 
-for e_i in xrange(next_epoch, config.num_epochs):
+for e_i in range(next_epoch, config.num_epochs):
   print("Starting e_i: %d" % e_i)
   sys.stdout.flush()
 
@@ -239,7 +244,7 @@ for e_i in xrange(next_epoch, config.num_epochs):
 
     imgs_curr = tup[0][0]  # always the first
     curr_batch_sz = imgs_curr.size(0)
-    for d_i in xrange(config.num_dataloaders):
+    for d_i in range(config.num_dataloaders):
       imgs_tf_curr = tup[1 + d_i][0]  # from 2nd to last
       assert (curr_batch_sz == imgs_tf_curr.size(0))
 
@@ -262,7 +267,7 @@ for e_i in xrange(next_epoch, config.num_epochs):
 
     avg_loss_batch = None  # avg over the heads
     avg_loss_no_lamb_batch = None
-    for i in xrange(config.num_sub_heads):
+    for i in range(config.num_sub_heads):
       loss, loss_no_lamb = IID_loss(x_outs[i], x_tf_outs[i], lamb=config.lamb)
       if avg_loss_batch is None:
         avg_loss_batch = loss
