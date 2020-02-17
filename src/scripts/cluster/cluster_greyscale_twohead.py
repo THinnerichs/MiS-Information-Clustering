@@ -310,7 +310,7 @@ def train(render_count=-1):
         iterators = (d for d in dataloaders)
 
         b_i = 0
-        for tup in itertools.izip(*iterators):
+        for tup in zip(*iterators):
           net.module.zero_grad()
 
           all_imgs = torch.zeros((config.batch_sz, config.in_channels,

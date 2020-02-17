@@ -203,7 +203,7 @@ for e_i in range(next_epoch, config.num_epochs):
   avg_loss_no_lamb = 0.
   avg_loss_count = 0
 
-  for tup in itertools.izip(*iterators):
+  for tup in zip(*iterators):
     net.module.zero_grad()
 
     # one less because this is before sobel
