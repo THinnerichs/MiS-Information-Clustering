@@ -21,6 +21,9 @@ from src.utils.cluster.cluster_eval import cluster_eval
 from src.utils.cluster.data import cluster_create_dataloaders
 from src.utils.cluster.IID_losses import IID_loss
 
+import torchvision.datasets.mnist
+
+
 """
   Semisupervised overclustering ("IIC+" = "IID+")
   Note network is trained entirely unsupervised, as labels are found for 
