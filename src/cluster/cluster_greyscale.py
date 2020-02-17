@@ -31,7 +31,8 @@ from code.utils.cluster.IID_losses import IID_loss
 
 import sys
 from os.path import dirname
-sys.path.append(dirname('../../'))
+sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/'))
+print(sys.path)
 
 # Options ----------------------------------------------------------------------
 
