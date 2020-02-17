@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import sys
 from os.path import dirname
-sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/'))
+sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/code/'))
 print(sys.path)
 
 import argparse
