@@ -29,6 +29,10 @@ from code.utils.cluster.IID_losses import IID_loss
   Network has one output head only.
 """
 
+import sys
+from os.path import dirname
+sys.path.append(dirname('../src/'))
+
 # Options ----------------------------------------------------------------------
 
 parser = argparse.ArgumentParser()
