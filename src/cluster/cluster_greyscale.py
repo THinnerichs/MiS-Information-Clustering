@@ -31,7 +31,7 @@ from code.utils.cluster.IID_losses import IID_loss
 
 import sys
 from os.path import dirname
-sys.path.append(dirname('../src/'))
+sys.path.append(dirname('../../'))
 
 # Options ----------------------------------------------------------------------
 
