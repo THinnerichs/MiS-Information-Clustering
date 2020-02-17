@@ -1,5 +1,10 @@
 from __future__ import print_function
 
+import sys
+from os.path import dirname
+sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/'))
+print(sys.path)
+
 import argparse
 import itertools
 import os
@@ -29,10 +34,6 @@ from code.utils.cluster.IID_losses import IID_loss
   Network has one output head only.
 """
 
-import sys
-from os.path import dirname
-sys.path.append(dirname('/home/hinnertr/MiS-Information-Clustering/'))
-print(sys.path)
 
 # Options ----------------------------------------------------------------------
 
