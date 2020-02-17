@@ -326,7 +326,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
     train_imgs_tf = ConcatDataset(train_tf_imgs_list)
     train_tf_dataloader = \
       torch.utils.data.DataLoader(train_imgs_tf,
-                                  batch_size=config.dataloader_batch_sz,
+                                  batch_size=int(config.dataloader_batch_sz),
                                   shuffle=shuffle,
                                   num_workers=0,
                                   drop_last=False)
