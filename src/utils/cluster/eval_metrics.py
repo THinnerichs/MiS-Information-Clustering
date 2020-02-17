@@ -23,7 +23,7 @@ def _original_match(flat_preds, flat_targets, preds_k, targets_k):
         out_to_gts[out_c] = gt_c
         out_to_gts_scores[out_c] = tp_score
 
-  return list(out_to_gts.iteritems())
+  return list(out_to_gts.items())
 
 
 def _hungarian_match(flat_preds, flat_targets, preds_k, targets_k):
