@@ -21,8 +21,6 @@ from src.utils.cluster.cluster_eval import cluster_eval
 from src.utils.cluster.data import cluster_create_dataloaders
 from src.utils.cluster.IID_losses import IID_loss
 
-import torchvision.datasets.mnist
-
 
 """
   Semisupervised overclustering ("IIC+" = "IID+")
@@ -42,7 +40,7 @@ parser.add_argument("--mode", type=str, default="IID+")
 
 parser.add_argument("--dataset", type=str, default="MNIST")
 parser.add_argument("--dataset_root", type=str,
-                    default="/scratch/local/ssd/xuji/MNIST")
+                    default="/home/hinnertr/MiS-Information-Clustering/MNIST/")
 
 parser.add_argument("--gt_k", type=int, default=10)
 parser.add_argument("--output_k", type=int, default=10)
@@ -57,7 +55,7 @@ parser.add_argument("--num_dataloaders", type=int, default=3)
 parser.add_argument("--num_sub_heads", type=int, default=5)
 
 parser.add_argument("--out_root", type=str,
-                    default="/scratch/shared/slow/xuji/iid_private")
+                    default="/home/hinnertr/MiS-Information-Clustering/out/MNIST/")
 parser.add_argument("--restart", dest="restart", default=False,
                     action="store_true")
 parser.add_argument("--restart_from_best", dest="restart_from_best",
@@ -166,6 +164,7 @@ if config.restart:
 net.cuda()
 net = torch.nn.DataParallel(net)
 net.train()
+
 
 optimiser = get_opt(config.opt)(net.module.parameters(), lr=config.lr)
 if config.restart:

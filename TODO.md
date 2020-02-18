@@ -1,4 +1,14 @@
-## TODO
+## Current TODO
+
+- Find perturbation location in IIC code
+- Search for some suitable non-image dataset
+  - check some perturbations here
+- Come up with suitable model -> Less complex, but same expressivity
+  - Guidos approach is therefor not suitable, right? ASk Pradeep
+
+Build IIC model on non-image dataset
+
+## Some Papers
 - Read paper thoroughly on [information clustering from Nico](http://openaccess.thecvf.com/content_ICCV_2019/papers/Ji_Invariant_Information_Clustering_for_Unsupervised_Image_Classification_and_Segmentation_ICCV_2019_paper.pdf)
   - Have a look at their Github repo
 - Read paper from Guido on [unique information](https://arxiv.org/abs/1709.07487)
