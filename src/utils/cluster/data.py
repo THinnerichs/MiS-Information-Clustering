@@ -281,6 +281,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
         train=train_partition,
         target_transform=target_transform)
 
+    print('train_imgs_list', len(train_imgs_curr))
     if hasattr(config, "mix_train"):
       if config.mix_train and (train_partition == "train+unlabeled"):
         train_imgs_curr = reorder_train_deterministic(train_imgs_curr)
@@ -319,6 +320,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
           train=train_partition,
           target_transform=target_transform)
 
+      print('train_tf_imgs_list', len(train_imgs_tf_curr))
       if hasattr(config, "mix_train"):
         if config.mix_train and (train_partition == "train+unlabeled"):
           train_imgs_tf_curr = reorder_train_deterministic(train_imgs_tf_curr)
