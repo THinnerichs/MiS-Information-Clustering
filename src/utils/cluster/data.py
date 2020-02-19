@@ -285,7 +285,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
       if config.mix_train and (train_partition == "train+unlabeled"):
         train_imgs_curr = reorder_train_deterministic(train_imgs_curr)
     train_imgs_list.append(train_imgs_curr)
-  print('train_imgs_list', train_imgs_list)
+  print('train_imgs_list', len(train_imgs_list))
 
   train_imgs = ConcatDataset(train_imgs_list)
   train_dataloader = torch.utils.data.DataLoader(train_imgs,
@@ -323,7 +323,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
         if config.mix_train and (train_partition == "train+unlabeled"):
           train_imgs_tf_curr = reorder_train_deterministic(train_imgs_tf_curr)
       train_tf_imgs_list.append(train_imgs_tf_curr)
-    print('train_tf_imgs_list', train_tf_imgs_list)
+    print('train_tf_imgs_list', len(train_tf_imgs_list))
 
     train_imgs_tf = ConcatDataset(train_tf_imgs_list)
     train_tf_dataloader = \
