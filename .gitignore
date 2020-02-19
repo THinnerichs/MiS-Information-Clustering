@@ -5,6 +5,7 @@ datasets/val2017.zip
 datasets/annotations/
 datasets/images/
 datasets/MNIST/
+datasets/MNIST_twohead/
 
 data/stage2_test_final.zip
 
