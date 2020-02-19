@@ -334,6 +334,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
     if not shuffle:
       assert (isinstance(train_tf_dataloader.sampler,
                          torch.utils.data.sampler.SequentialSampler))
+    print(len(train_dataloader), len(train_tf_dataloader))
     assert (len(train_dataloader) == len(train_tf_dataloader))
     dataloaders.append(train_tf_dataloader)
 

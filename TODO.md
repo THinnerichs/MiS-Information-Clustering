@@ -1,10 +1,14 @@
 ## Current TODO
 
 - Find perturbation location in IIC code
+- Find definition and application of IIC loss/objective function!
+- Build counterexample such that IIC-approach is not working anymore
 - Search for some suitable non-image dataset
   - check some perturbations here
 - Come up with suitable model -> Less complex, but same expressivity
   - Guidos approach is therefor not suitable, right? ASk Pradeep
+
+- STILL WRITE SUMMARY!
 
 Build IIC model on non-image dataset
 

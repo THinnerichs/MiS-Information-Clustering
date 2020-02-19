@@ -45,3 +45,4 @@ def compute_joint(x_out, x_tf_out):
   p_i_j = p_i_j / p_i_j.sum()  # normalise
 
   return p_i_j
+

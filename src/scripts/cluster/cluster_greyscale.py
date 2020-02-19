@@ -162,6 +162,8 @@ if config.restart:
     torch.load(model_path, map_location=lambda storage, loc: storage))
 
 net.cuda()
+device = torch.device('cuda')
+
 net = torch.nn.DataParallel(net)
 net.train()
 
