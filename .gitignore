@@ -4,5 +4,10 @@ datasets/stuffthingmaps_trainval2017.zip
 datasets/val2017.zip
 datasets/annotations/
 datasets/images/
+datasets/MNIST/
 
 data/stage2_test_final.zip
+
+out/
+
+__pycache__/
