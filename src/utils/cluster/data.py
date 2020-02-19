@@ -319,6 +319,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
           transform=tf2,
           train=train_partition,
           target_transform=target_transform)
+        print("bumm", train_imgs_tf_curr)
 
       print('train_tf_imgs_list', len(train_imgs_tf_curr))
       if hasattr(config, "mix_train"):
