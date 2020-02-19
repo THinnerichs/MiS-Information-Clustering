@@ -1,3 +1,7 @@
+This repository is about the application of IIC for biomedical tasks. In before various tests of the original method are performed.
+
+See the original README.md here:
+
 # Invariant Information Clustering for Unsupervised Image Classification and Segmentation
 
 This repository contains PyTorch code for the <a href="https://arxiv.org/abs/1807.06653">IIC paper</a>.
