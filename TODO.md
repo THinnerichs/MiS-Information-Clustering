@@ -12,6 +12,17 @@
 
 - STILL WRITE SUMMARY!
 
+1. Wasserstein Distance
+2. Sinkhole
+3. Image deformation
+
+- Do some literature search on image deformation for adversarial attacks 
+
+Tex file:
+- Loss function
+- Actual model
+- Perturbation model
+
 Build IIC model on non-image dataset
 
 ## Some Papers

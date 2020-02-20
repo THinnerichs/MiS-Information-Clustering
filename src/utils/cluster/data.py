@@ -11,6 +11,7 @@ from src.utils.cluster.transforms import sobel_make_transforms, \
 from src.utils.semisup.dataset import TenCropAndFinish
 from .general import reorder_train_deterministic
 
+from src.utils.cluster.custom_datasets import Gaussian2DDataset
 
 # Used by sobel and greyscale clustering twohead scripts -----------------------
 
@@ -509,3 +510,38 @@ def _cifar100_to_cifar20(target):
      99: 13}
 
   return _dict[target]
+
+def cluster_create_gaussian_dataloaders(config):
+  assert (config.mode == "IID")
+  assert (not config.twohead)
+
+  target_transform = None
+
+  if config.dataset == 'Gaussian_2D_test':
+      dataset_class = Gaussian2DDataset
+  else:
+      raise ValueError
+
+  print("Making datasets with %s and %s" % (dataset_class, target_transform))
+  sys.stdout.flush()
+
+  dataloaders = \
+    _create_gaussian_dataloaders(config, dataset_class, tf1, tf2,
+                        partitions=config.train_partitions,
+                        target_transform=target_transform)
+
+  mapping_assignment_dataloader = \
+    _create_mapping_loader(config, dataset_class, tf3,
+                           partitions=config.mapping_assignment_partitions,
+                           target_transform=target_transform)
+
+  mapping_test_dataloader = \
+    _create_mapping_loader(config, dataset_class, tf3,
+                           partitions=config.mapping_test_partitions,
+                           target_transform=target_transform)
+
+  return dataloaders, mapping_assignment_dataloader, mapping_test_dataloader
+
+def _create_gaussian_dataloaders(config, datasets_class, tf1, tf2,
+                                 partitions, target_transform)
+
