@@ -91,7 +91,7 @@ What papers to include:
   - For perturbation:
     - Check some odd perturbations -> How good are they?
     - Use normal Gaussian as noise
-    - Check Wasserstein (Or whatever hsi name is) diffusion kernel 
+    - Check Wasserstein diffusion kernel 
     - Maybe then try to perturbate some image dataset
   - For model testing:
     - Get simple non-image dataset
