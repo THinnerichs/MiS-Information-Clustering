@@ -16,3 +16,16 @@ Critics paper
 - [Factoized Mututal Information Maximization](https://arxiv.org/abs/1906.05460)
 - [Deep image prior](https://sites.skoltech.ru/app/data/uploads/sites/25/2018/04/deep_image_prior.pdf)
 - [Mutual information Neural Estimation](https://arxiv.org/pdf/1801.04062.pdf)
+
+
+Second phase:
+- [Wasserstein metric](https://link.springer.com/chapter/10.1007/978-3-030-26980-7_73)
+- [Wasserstein metric on images](http://proceedings.mlr.press/v97/dukler19a.html)
+- [Wasserstein Diffusion Tikhonov regularisation](https://arxiv.org/abs/1909.06860)
+
+
+Image deformations:
+- [adversarial deformations](https://openreview.net/forum?id=Hk4dFjR5K7)
+  - affiliated [Github repo](https://gitlab.math.ethz.ch/tandrig/ADef)
+
+- [Sinkhole](http://proceedings.mlr.press/v97/wong19a.html)

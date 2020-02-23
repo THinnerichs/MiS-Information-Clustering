@@ -10,8 +10,6 @@
 - * [ ] come up with suitable model -> Less complex, but same expressivity
   - Guidos approach is therefor not suitable, right? ASk Pradeep
 
-- STILL WRITE SUMMARY!
-
 1. Wasserstein Distance
 2. Sinkhole
 3. Image deformation
