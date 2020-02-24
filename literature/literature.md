@@ -1,5 +1,6 @@
 ## Read papers
 
+- [Information clustering paper from Nico](http://openaccess.thecvf.com/content_ICCV_2019/papers/Ji_Invariant_Information_Clustering_for_Unsupervised_Image_Classification_and_Segmentation_ICCV_2019_paper.pdf)
 - [Learning deep representations by mutual information estimation and maximization](https://arxiv.org/pdf/1808.06670.pdf):
   - formalizes DIM, which simultaneously estimates and maximizes the mututal inforamtion between input data and learned high-level representations
   - uses adversarial learning to have desired statistical characteristics

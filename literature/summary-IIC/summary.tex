@@ -18,6 +18,7 @@
 \title{Summary on the topic of Maximization of Mutual Information for Information Clustering}
 \author{Tilman Hinnerichs\\
 \href{mailto:tilman@hinnerichs.com}{tilman@hinnerichs.com}}
+\date{}
 
 % Build subsubsubsection
 \usepackage{titlesec}
@@ -54,15 +55,26 @@
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
 
+%\usepackage{fancyhdr}
+
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+
 \begin{document}
+	
+	\title{ \normalsize \textsc{MPI: MiS}
+		\\ [0.5cm]
+		\HRule{0.5pt} \\
+		\LARGE \textbf{\uppercase{Maximization of Mutual Information for Information Clustering}}
+		\HRule{0.5pt} \\ [0.5cm]
+		\normalsize }
 
 \maketitle
 
 This summary is a summary of the talk given at the February 21st 2020 at MPI MiS by Tilman Hinnerichs.
 \section{Clustering}
-Clustering algorithms are a group of algorithms for the exploration of similarity structures among datasets. It aims on identifying groups within the data, that are somehow similar to each other. As no additional data is used, these are classified as unsupervised learning methods. Crucially, these so called clusters do not have any label, are only based on the underlying information of each data point. In general, whether a clustering is good or bad can only be determined by an expert, or ground truth. Alternatively, quality of clusters can be measured by various dataset independent measures, e.g., average r adius of the clusters and distance between different clusters. The various algorithms differ in their interpretation of similarity. \\
+Clustering algorithms are a group of algorithms for the exploration of similarity structures among datasets. It aims on identifying groups within the data, that are somehow similar to each other. As no additional data is used, these are classified as unsupervised learning methods. Crucially, these so called clusters do not have any label and are only based on the underlying information of each data point. In general, whether a clustering is good or bad can only be determined by an expert, or ground truth. Alternatively, quality of clusters can be measured by various dataset independent measures, e.g., average radius of the clusters and distance between different clusters. The various algorithms differ in their interpretation of similarity. \\
 \section{k-means-clustering}
-k-means is one of the simplest and widely known clustering algorithms and shall thus be explained here briefly. $k$ hereby defines the number of clusters.\\
+k-means is one of the simplest and widely known clustering algorithms and shall thus be explained here briefly. $k$ hereby denotes the number of clusters.\\
 The steps are the following:
 \begin{enumerate}
 	\item Randomly initialize $k$ points as initial means 
@@ -72,14 +84,16 @@ The steps are the following:
 Repeat steps 2 and 3 until the means are not changing anymore or within a certain margin.
 
 \section{Discussed papers}
-When trying to find a suitable representation, we are trying to have as much information from the input within the output, i.e. loose as little information from the input as possible. Thus, the \textit{transinformation} or \textit{mutual information} (MI) has to be maximized also known as the infomax principle (Linsker, 1988). Hence, making MI the objective function for representation learning seems to be a suitable approach. However,  mutual information is generally quite difficult to compute, especially in continuous and high dimensional settings.\\
-Let $\mathcal{X}, \mathcal{Y}$ be the domain and the range of a (continuous and (almost everywhere) differentiable) parametric function
-$E_\psi:\mathcal{X}\rightarrow\mathcal{Y}$ with parameters $\psi$. Additionally, let $\mathcal{E}_\Psi=\{E_\psi\}_{\psi\in\Psi}$ over $\Psi$. \\
-Different approaches are trying to maximize mutual information between different points of the network, e.g., between input and the output, or between different representations.
+When trying to find a suitable representation, we are trying to have as much information from the input within the output, i.e. loose as little information from the input as possible. Thus, the \textit{transinformation} or \textit{mutual information} (MI) has to be maximized also known as the infomax principle (Linsker, 1988). Hence, making MI the objective function for representation learning and clustering seems to be a suitable approach. However,  mutual information is generally quite difficult to compute, especially in continuous and high dimensional settings.\\
 
-\subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax (DIM)}
+Different approaches are trying to maximize mutual information between different points of the network, e.g., between input and the output, or between different representations.\\
+
+Let $\mathcal{X}, \mathcal{Y}$ be the domain and the range of a parametric function
+$E_\psi:\mathcal{X}\rightarrow\mathcal{Y}$ with parameters $\psi$. Additionally, let $\mathcal{E}_\Psi=\{E_\psi\}_{\psi\in\Psi}$ over $\Psi$. Then we want to find the set of parameters $\psi$, such that MI is maximized between two given points.\\
+
+\subsection{Learning Deep Representations by mututal Inforamtion Estimation and Maximization -- Deep InfoMax (DIM) (Hjelm et al., 2019)}
 \subsubsection{Approach}
-Find the set of parameters $\psi$, such that the mutual information, $\mathcal{I}(X;E_\psi(X))$ is maximized. Ideally the marginal distribution induced by forwarding samples from the empirical distribution for a given $\psi$ should match a prior distribution, thus encouraging the output of the encoder to have desired characteristics, e.g., independence.\\
+In DIM find the set of parameters $\psi$, such that the mutual information $\mathcal{I}(X;E_\psi(X))$ is maximized. Ideally the marginal distribution induced by forwarding samples from the empirical distribution for a given $\psi$ should match a prior distribution, thus encouraging the output of the encoder to have desired characteristics, e.g., independence.\\
 The authors maximize the mutual information between spatially-preserved features, that have to be precomputed and their high-level representation. DIM simultaneously estimates and maximizes the mutual information.\\
 
 The authors present various techniques to estimate the MI, eventually deciding for the Noise-Contrastive Estimation (infoNCE).\\
@@ -94,10 +108,10 @@ Hereby the following notations are used:
 	\item[$M^2$] number of features with preserved locality extracted from the input images
 	\item[$X^{(i)}$] Feature $i$ of input image $X$
 	\item[$\alpha,\beta,\gamma$] weights to each part of the objective function, chosen as hyperparameters. Choices in these hyperparameters affect the learned representations in meaningful ways.
-	\item[$\hat{\mathcal{D}}$] discriminator for the minimization of KL-divergence between output distribution $\mathbb{U_{\psi,\mathbb{P}}}$ and prior distribution with certain desired properties $\mathbb{V}$.
+	\item[$\hat{\mathcal{D}}$] discriminator for the minimization of KL-divergence between output distribution $\mathbb{U_{\psi,\mathbb{P}}}$ and prior distribution $\mathbb{V}$ with certain desired properties .
 \end{itemize}
 
-This equation can be divided ino parts that compute the cope 
+This equation can be divided into several parts that cope with 
 \begin{enumerate}
 	\item global, and
 	\item local MI maximization, and
@@ -112,29 +126,29 @@ The authors find that incorporating knowledge about locality in the input signif
 
 Major drawbacks are:
 \begin{itemize}
-	\item Only applicable to images and
-	\item Needs preprocessing creating the images features
-	\item needs k-means after representation calculation for eventual clustering, and is thus prone to degeneration
-	\item calculates over continuous random variables, which requires complex estimators, making an approximation necessary
-	\item DeepInfomax estimator reduces to entropy (stated by IIC paper)
-	\item Doesn't give a hint on best amount of classes, hence making the number of clusters a hyperparameter for k-means
+	\item Only applicable to images,
+	\item Needs preprocessing creating the images features,
+	\item needs k-means after representation calculation for eventual clustering, and is thus prone to degeneration,
+	\item calculates over continuous random variables, which requires complex estimators, making an approximation necessary,
+	\item DeepInfomax estimator reduces to entropy (stated by IIC paper), and
+	\item doesn't give a hint on best amount of classes, hence making the number of clusters a hyperparameter for k-means.
 \end{itemize}
 
-\subsection{Invariant Information Clustering}
+\subsection{Invariant Information Clustering (Ji, Henriques, Vedaldi, 2018)}
 \subsubsection{Approach}
 
 The IIC paper focuses on two issues that previous papers, such as DIM and IMSAT, weren't addressing. \\
 
-The first issue is the general degeneracy of clustering solutions. As widely known, k-means degenerates for unfortunate initializations, thus leading two one cluster capturing the whole data. This issue is addressed through the nature of the mutual information, as it is not maximized for degenerate solutions. Second, noisy data with unknown or distractor classes such as in STL10 bother some clustering algorithms. This is addressed through the concept of auxiliary overclustering.\\
+The first issue is the general degeneracy of clustering solutions. As widely known, k-means degenerates for unfortunate initializations, thus leading to one cluster capturing the whole data. This issue is addressed through the nature of the mutual information, as it is not maximized for degenerate solutions. Second, noisy data with unknown or distractor classes such as in \textit{STL10} bother some clustering algorithms. This is addressed through the concept of auxiliary overclustering.\\
 
-Let $x, x' \in \mathcal{X}$ be paired data sample from a joint probability distribution $P(x,x')$, e.g., two images containing the same image. We now want to maximize the mutual information between representation of those similar entities, dismissing instance specific information and keeping similarities. The goal is to make the representations of paired samples the same, which is not the same as minimizing representation distance.
+Let $x, x' \in \mathcal{X}$ be a paired data sample from a joint probability distribution $P(x,x')$, e.g., two images containing the same object. We now want to maximize the mutual information between representation of those similar entities, dismissing instance specific information and preserving similarities. The goal is to make the representations of paired samples the same, which is not the same as minimizing the representation distance.
 \begin{equation}
 	\max_\psi \mathcal{I}(E_\psi(x),E_\psi(x'))
 \end{equation}
 
-In contrast to DIM the representation space $\mathcal{Y} = \{1,\dots,C\}$ is discrete and finite, hence making the calculation of the MI precise and fast. \\ 
+In contrast to DIM, the representation space $\mathcal{Y} = \{1,\dots,C\}$ is discrete and finite, hence making the calculation of the MI precise and fast. The authors distinguish between semantic clustering and representation learning, as DIM is learning a representation which can be utilized for clustering downstream, while IIC performs the clustering task end to end.\\ 
 
-We denote the output $E_\psi(x)$, that can be interpreted as the distribution of a discrete random variable $z$ over $C$ classes with $P(z=c|x) = E_{\psi,c} \in [0,1]^C$.\\
+We denote the output $E_\psi(x)$, that can be interpreted as the distribution of a discrete random variable $z$ over $C$ classes, with $P(z=c|x) = E_{\psi,c} \in [0,1]^C$.\\
 Now consider a pair of such  cluster assignment variables $z, z'$ for two inputs $x,x'$. Their conditional joint distribution is given by $P(z=c, z'=c'|x,x') = E_{\psi,c}(x) \cdot E_{\psi,c'}(x)$.\\
 
 Thus, one is able to build a $C\times C$ matrix $\mathbf{P}$, with $\mathbf{P}_{cc'} = P(z=c|z'=c')$, computed by
@@ -155,17 +169,9 @@ Furthermore, IIC is capable of auxiliary overclustering, adding additional outpu
 \subsubsection{Results}
 Benefits:
 \begin{itemize}
-	\item Only reliant on the information itself
-	\item As range is discrete, exact computation of MI is possible and fast
-\end{itemize}
-
-Content:
-\begin{itemize}
-	\item semantic clustering vs. representation learning
-	\item theoretical foundations of IIC in statistical learning
-\end{itemize}
-\begin{itemize}
-	\item Set state of the art performance on various dataset
+	\item Only reliant on the information itself,
+	\item As range is discrete, exact computation of MI is possible and fast, and 
+	\item set state of the art performance on various datasets (e.g., IMSAT, DIM, $\dots$)
 \end{itemize}
 
 \section{Perturbation models}

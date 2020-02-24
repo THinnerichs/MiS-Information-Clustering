@@ -1,10 +1,10 @@
 \BOOKMARK [1][-]{section.1}{Clustering}{}% 1
 \BOOKMARK [1][-]{section.2}{k-means-clustering}{}% 2
 \BOOKMARK [1][-]{section.3}{Discussed papers}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Learning Deep Representations by mututal Inforamtion Estimation and Maximization \205 Deep InfoMax \(DIM\)}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Learning Deep Representations by mututal Inforamtion Estimation and Maximization \205 Deep InfoMax \(DIM\) \(Hjelm et al., 2019\)}{section.3}% 4
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Approach}{subsection.3.1}% 5
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Results}{subsection.3.1}% 6
-\BOOKMARK [2][-]{subsection.3.2}{Invariant Information Clustering}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Invariant Information Clustering \(Ji, Henriques, Vedaldi, 2018\)}{section.3}% 7
 \BOOKMARK [3][-]{subsubsection.3.2.1}{Approach}{subsection.3.2}% 8
 \BOOKMARK [3][-]{subsubsection.3.2.2}{Results}{subsection.3.2}% 9
 \BOOKMARK [1][-]{section.4}{Perturbation models}{}% 10
