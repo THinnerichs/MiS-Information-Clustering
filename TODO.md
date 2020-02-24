@@ -1,14 +1,7 @@
 ## Current TODO
 
-- * [X] Find perturbation location in IIC code
-- * [X] Find definition and application of IIC loss/objective function!
-- * [ ] Test different perturbations
-  - * [ ] Wasserstein = inverse Laplacian
-- * [ ] Build counterexample such that IIC-approach is not working anymore
 - * [ ] Search for some suitable non-image dataset
   - * [ ] heck some perturbations here
-- * [ ] come up with suitable model -> Less complex, but same expressivity
-  - Guidos approach is therefor not suitable, right? ASk Pradeep
 
 1. Wasserstein Distance
 2. Sinkhole
