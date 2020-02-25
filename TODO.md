@@ -4,6 +4,8 @@
   - * [ ] heck some perturbations here
 
 1. Wasserstein Distance
+  - How to puth deformation distance into distribution?
+    - Somehow encoded in dimensions of perturbation sphere (With W-2 metric)
 2. Sinkhole
 3. Image deformation
 
