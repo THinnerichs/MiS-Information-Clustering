@@ -177,6 +177,28 @@ Benefits:
 \section{Perturbation models}
 \subsection{Wasserstein distance}
 
+Properties:
+\begin{itemize}
+	\item Robust to rotation and scaling
+	\item also called Wasserstein ground metric or Earth Movers distance
+	\item implementations available from OpenCV and Scikit
+\end{itemize}
+
+For metric sample space $(\mathcal{X},d_\mathcal{X})$, define Earth Movers distance of images as follows\\
+
+\begin{equation}
+	d_\mathcal{X}(X,Y):= W_{q,d_\Omega}(X,Y) = \inf_\pi \{ (\mathbb{E}_{(x,y)\sim \pi}d_\Omega (x,y)^q)^{\frac{1}{q}} \}
+\end{equation} 
+
+Usually we denote this with Wasserstein-$q$. In general we will only examine Wasserstein-2.
+
+\begin{itemize}
+	\item sample images from 
+	\begin{equation}
+		p(\xi|x):= \exp(-d_W(x,x+\xi)^2/\eta^2)d(\xi)
+	\end{equation}(See \href{https://arxiv.org/pdf/1909.06860.pdf}{Lin, $\dots$, Montufar, 2019, Chapter 3})
+\end{itemize}
+
 \subsection{Sinkhole}
 
 \subsection{Image deformation}
