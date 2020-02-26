@@ -59,6 +59,13 @@
 
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
 
+% Algorithm
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsmath}
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
 \begin{document}
 	
 	\title{ \normalsize \textsc{MPI: MiS}
@@ -216,6 +223,34 @@ Starting at $x^{(0)}=x$ or any other randomly initialized point within $\mathcal
 As clustering is a fully unsupervised task, we do not have a label $y$, and the ordinary MI from the IIC paper cannot be used as the codomain is not differentiable.
 
 \subsection{Image deformation}
-A solution to this issue might be the \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)}. The authors build \textsc{ADef} iteratively for an existing, arbitrary model, aiming for an adversarial attack. This algorithm can be used to simulate the steps with a given step size, as proposed by the iterative Sinkhorn method.  
+A solution to this issue might be the \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)}. The authors build \textsc{ADef} iteratively for an existing, arbitrary model, aiming for an adversarial attack. This algorithm can be used to simulate the steps with a given step size, as proposed by the iterative Sinkhorn method.  \\
+
+As mentioned this relies on on a given, already existing model. Whether this is suitable \textbf{still needs to be discussed}.
+
+\subsection{Algorithm}
+The algorithm may be as mentioned in the sections above, but may be condensed as follows. For every input image $x\in X$:
+
+\begin{algorithm}
+	\caption{\textsc{Wasserstein metric based perturbation}}
+	\begin{algorithmic}[1]
+		
+		\Procedure{W2-perturbation}{$x, \epsilon$}
+		\State $x':=x$ 
+		\While{\textsc{True}}
+			\State $x'':=\textsc{ADefStep}(x',\dots)$\Comment{Single \textsc{ADef} step with step size $\alpha$}
+			\If{$ W2(x'', x)\leq \epsilon$}\Comment{$x''$ within ball}
+			\State $x':=x''$
+			\If{With probability $p(\xi|x)$ choose}\Comment{$\xi$ dependent on $W2(x',x)$}
+				\State Return $x'$
+			\EndIf
+			\Else
+			\State Return $x'$
+			\EndIf
+		\EndWhile
+	
+		\EndProcedure
+
+	\end{algorithmic}
+\end{algorithm}
 
 \end{document}
