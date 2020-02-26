@@ -6,10 +6,8 @@
 1. Wasserstein Distance
   - How to puth deformation distance into distribution?
     - Somehow encoded in dimensions of perturbation sphere (With W-2 metric)
-2. Sinkhole
+2. Sinkhorn
 3. Image deformation
-
-- Do some literature search on image deformation for adversarial attacks 
 
 Tex file:
 - Loss function
