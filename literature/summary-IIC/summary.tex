@@ -3,26 +3,26 @@
 \usepackage{babel}
 \usepackage{hyperref}
 \usepackage{mwe}
-\usepackage[markcase=noupper% Großschreibung unterdrücken
+\usepackage[markcase=noupper
 ]{scrlayer-scrpage}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{hyperref}
 
 \KOMAoptions{
 	headsepline = true
 }
 \ihead{Tilman Hinnerichs}
 \ohead{Maximization of Mutual Information for Information Clustering}
+\cfoot*{\pagemark}
 %opening
 \title{Summary on the topic of Maximization of Mutual Information for Information Clustering}
 \author{Tilman Hinnerichs\\
 \href{mailto:tilman@hinnerichs.com}{tilman@hinnerichs.com}}
 \date{}
+\pagestyle{headings}
 
 % Build subsubsubsection
 \usepackage{titlesec}
-\usepackage{hyperref}
 
 \titleclass{\subsubsubsection}{straight}[\subsection]
 
@@ -198,9 +198,24 @@ Usually we denote this with Wasserstein-$q$. In general we will only examine Was
 		p(\xi|x):= \exp(-d_W(x,x+\xi)^2/\eta^2)d(\xi)
 	\end{equation}(See \href{https://arxiv.org/pdf/1909.06860.pdf}{Lin, $\dots$, Montufar, 2019, Chapter 3})
 \end{itemize}
+Thus for a given perturbation $\xi$ we can determine its probability. 
 
-\subsection{Sinkhole}
+\subsection{Sinkhorn}
+In order to obtain those perturbations $\xi$ we will have a look at \href{http://proceedings.mlr.press/v97/wong19a/wong19a.pdf}{this paper} (Wong et al., 2019), that also provides code on Github for its algorithms. We therefor build a ball with respect to the Wasserstein ground metric as previously defined. For a data point $(x,y)$ at position $x$ with label $y$ we build the projection of this point onto the ball around the point $x$ formalized as follows.\\
+
+The projection of an arbitrary point $w$ onto the ball $\mathcal{B}(x,\epsilon)$ around $x$ with radius $\epsilon$ is described by
+\begin{equation}
+	proj_{\mathcal{B}(x,\epsilon)}(w):=\arg \min_{x\in\mathcal{B}(x,\epsilon)}||w-z||^2_2
+\end{equation}
+
+Starting at $x^{(0)}=x$ or any other randomly initialized point within $\mathcal{B}(x,\epsilon)$, we iteratively take steps with a step size $\alpha$ and some loss $l$ (e.g., cross-entropy loss) according to this update formula
+\begin{equation}
+	x^{(t+1)} := proj_{\mathcal{B}(x,\epsilon)} (x^{(t)} + \arg \max_{||v||\leq\alpha}v^T\nabla l(x^{(t)},y))
+\end{equation}
+
+As clustering is a fully unsupervised task, we do not have a label $y$, and the ordinary MI from the IIC paper cannot be used as the codomain is not differentiable.
 
 \subsection{Image deformation}
+A solution to this issue might be the \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)}. The authors build \textsc{ADef} iteratively for an existing, arbitrary model, aiming for an adversarial attack. This algorithm can be used to simulate the steps with a given step size, as proposed by the iterative Sinkhorn method.  
 
 \end{document}
