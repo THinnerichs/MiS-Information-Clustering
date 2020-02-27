@@ -14,6 +14,11 @@ Tex file:
 - Actual model
 - Perturbation model
 
+Three methods to obtain perturbations (See photo of blackboard for explanation):
+1. Along ADef plane and with respect to L_\infinity norm
+2. Just take arbitrary function for walk inside of Wasserstein ball and sample from that
+3. Combine both: Go along linearized manifold of ADef within Wasserstein-2 ball
+
 Build IIC model on non-image dataset
 
 ## Some Papers
