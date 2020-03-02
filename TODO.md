@@ -19,6 +19,16 @@ Three methods to obtain perturbations (See photo of blackboard for explanation):
 2. Just take arbitrary function for walk inside of Wasserstein ball and sample from that
 3. Combine both: Go along linearized manifold of ADef within Wasserstein-2 ball
 
+
+-----------------------------------------
+
+- Finally build and finish rebuild of their model
+- Mollify summary and add questions that rose up
+- implement three methods to obtain perturbations, see above
+
+
+-----------------------------------------
+
 Build IIC model on non-image dataset
 
 ## Some Papers
