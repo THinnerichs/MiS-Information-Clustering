@@ -11,6 +11,8 @@ from torch.autograd import Variable
 
 from projected_sinkhorn import conjugate_sinkhorn, projected_sinkhorn, wasserstein_cost
 
+from scipy.ndimage import gaussian_filter
+
 
 
 def custom_greyscale_to_tensor(include_rgb):
@@ -566,6 +568,57 @@ def greyscale_sinkhorn_wasserstein_ball_perturbation(X,
 
     epsilon_best[~err] = float('inf')
     return X_best, err_best, epsilon_best
+
+def greyscale_random_smoothed_deformation(X,
+                                          deformation_range=4,
+                                          sigma=2):
+
+    """
+    Apply a random deformation within deformation_range smoothed by a gaussian filter
+    with sigma=sigma.
+
+    :param X:
+    :param deformation_range:
+    :param sigma:
+    :return:
+    """
+
+    batch_size = X.size(0)
+    height, width = X.size(1), X.size(2)
+
+    x_deformation_matrix = np.random.randint(-deformation_range,
+                                             deformation_range+1,
+                                             size=(height, width)
+                                             )
+
+
+    y_deformation_matrix = np.random.randint(-deformation_range,
+                                             deformation_range+1,
+                                             size=(height, width)
+                                             )
+
+    x_filtered = gaussian_filter(x_deformation_matrix, sigma=sigma)
+    y_filtered = gaussian_filter(y_deformation_matrix, sigma=sigma)
+
+    return_batch = X.clone()
+
+    for image_index in range(batch_size):
+        for i in range(height):
+            for j in range(width):
+                # Check whether indices are still within bounds
+                x_index = j + x_deformation_matrix[i,j]
+                x_index = width-1 if x_index >= width else x_index
+                x_index = 0 if x_index < 0 else x_index
+
+                y_index = j + y_deformation_matrix[i, j]
+                y_index = height - 1 if y_index >= height else y_index
+                y_index = 0 if y_index < 0 else y_index
+
+                return_batch[image_index, i, j] = X[image_index,
+                                                    x_index,
+                                                    y_index]
+
+    return return_batch
 
 
 
