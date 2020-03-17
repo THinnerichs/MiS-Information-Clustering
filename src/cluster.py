@@ -61,6 +61,9 @@ parser.add_argument("--no_jitter", dest="no_jitter", default=False,
 parser.add_argument("--no_flip", dest="no_flip", default=False,
                     action="store_true")
 
+# Custom arguments
+parser.add_argument("--transformation", type=str, default='standard')
+
 config = parser.parse_args()
 
 # Build main function in here

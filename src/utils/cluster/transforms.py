@@ -333,7 +333,12 @@ def greyscale_make_transforms(config):
 
   return tf1, tf2, tf3
 
-def test_greyscale_make_transforms(config):
+def make_linearization_l2_transforms(config):
+  """
+  Build transformations with respect to the linearization of the ADef algorithm, but within l2 ball.
+  :param config:
+  :return:
+  """
   tf1_list = []
   tf3_list = []
   tf2_list = []

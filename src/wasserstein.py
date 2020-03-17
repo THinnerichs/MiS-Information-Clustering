@@ -22,11 +22,3 @@ def get_histogram(img):
         for j in range(w):
             hist[img[i, j]] += 1
     return np.array(hist) / (h * w)
-
-def gaussian_wasserstein_distribution(x,
-                                      x_perturbed,
-                                      eta=1,
-                                      reference=0.1):
-    dist = earth_movers_distance(x, x_perturbed)
-    return np.exp(-dist**2 / eta**2) * reference
-

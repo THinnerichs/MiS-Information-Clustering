@@ -26,6 +26,25 @@ Three methods to obtain perturbations (See photo of blackboard for explanation):
 - Mollify summary and add questions that rose up
 - implement three methods to obtain perturbations, see above
 
+- Build simple perturbation over Wasserstein ball
+- Test it on MNIST with their existing model
+- Build simple model to test perturbations on Gaussian
+- Build other perturbation methods
+
+-----------------------------------------
+
+Talk with Guido on 13.03.2020:
+- How are things in Leipzig?
+- Currently running experiments -> Take quite long
+  - Accuracy over different radii
+- What to do next?
+  - Check on medical dataset?
+  - 
+
+- Summary
+  - continuity of the model
+  - perturbation model
+
 
 -----------------------------------------
 

@@ -3,10 +3,14 @@ from __future__ import print_function
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.optim as optim
 import torchvision
 import torchvision.transforms.functional as tf
 from PIL import Image
 from torch.autograd import Variable
+
+from projected_sinkhorn import conjugate_sinkhorn, projected_sinkhorn, wasserstein_cost
+
 
 
 def custom_greyscale_to_tensor(include_rgb):
@@ -266,20 +270,20 @@ def greyscale_make_transforms(config):
     if config.crop_other:
         imgs_tf_crops = []
         for tf2_crop_sz in config.tf2_crop_szs:
-        if config.tf2_crop == "random":
-            print("selected random crop for tf2")
-            tf2_crop_fn = torchvision.transforms.RandomCrop(tf2_crop_sz)
-        elif config.tf2_crop == "centre_half":
-            print("selected centre_half crop for tf2")
-            tf2_crop_fn = torchvision.transforms.RandomChoice([
-            torchvision.transforms.RandomCrop(tf2_crop_sz),
-            torchvision.transforms.CenterCrop(tf2_crop_sz)
-            ])
-        elif config.tf2_crop == "centre":
-            print("selected centre crop for tf2")
-            tf2_crop_fn = torchvision.transforms.CenterCrop(tf2_crop_sz)
-        else:
-            assert (False)
+            if config.tf2_crop == "random":
+                print("selected random crop for tf2")
+                tf2_crop_fn = torchvision.transforms.RandomCrop(tf2_crop_sz)
+            elif config.tf2_crop == "centre_half":
+                print("selected centre_half crop for tf2")
+                tf2_crop_fn = torchvision.transforms.RandomChoice([
+                    torchvision.transforms.RandomCrop(tf2_crop_sz),
+                    torchvision.transforms.CenterCrop(tf2_crop_sz)
+                ])
+            elif config.tf2_crop == "centre":
+                print("selected centre crop for tf2")
+                tf2_crop_fn = torchvision.transforms.CenterCrop(tf2_crop_sz)
+            else:
+                assert (False)
 
         print("adding crop size option for imgs_tf: %d" % tf2_crop_sz)
         imgs_tf_crops.append(tf2_crop_fn)
@@ -331,10 +335,17 @@ def greyscale_make_transforms(config):
 
     return tf1, tf2, tf3
 
-def wasserstein_ball_transform(config):
+def greyscale_ADef_linf_norm_transform(config):
+    """
+    Build perturbations with the ADef algorithm from an arbitrary loss function (e.g. categorical-cross entropy).
+    Sampled from Wasserstein gaussian within a l-infinity ball around the datapoint.
+    :param config:
+    :return:
+    """
+
     tf1_list = []
-    tf3_list = []
     tf2_list = []
+    tf3_list = []
 
     # tf1 and 3 transforms
     if config.crop_orig:
@@ -447,8 +458,120 @@ def wasserstein_ball_transform(config):
 
     return tf1, tf2, tf3
 
-def ADef_linearized_transformation():
-    # @TODO Add second approach for deformations in here
-    pass
+def greyscale_sinkhorn_wasserstein_ball_perturbation(X,
+                                                     num_classes,
+                                                     radius=0.1,
+                                                     epsilon=0.01,
+                                                     epsilon_iters=10,
+                                                     epsilon_factor=1.1,
+                                                     p=2,
+                                                     kernel_size=5,
+                                                     maxiters=400,
+                                                     alpha=0.1,
+                                                     xmin=0,
+                                                     xmax=1,
+                                                     normalize=lambda x:x,
+                                                     verbose=0,
+                                                     regularization=1000,
+                                                     sinkhorn_maxiters=400,
+                                                     ball='wasserstein',
+                                                     norm='wasserstein'
+                                                     ):
+    """
+    Use iterated Sinkhorn iterations over arbitrary loss function (e.g. categorial cross entropy with random label)
 
-def
+    :return:
+    """
+
+    batch_size = X.size(0)
+
+    # initialize net as multiplication of image with random matrix
+    np.random.seed(42)
+    random_matrix = torch.from_numpy(np.random.random_sample(list(X.size())))
+    downscaling_factor = np.prod(list(X.size())[1:])
+    random_matrix /= downscaling_factor
+
+    # randomly initialize y
+    y = torch.rand(0, 2, (batch_size))
+
+    def net(X):
+        X /= 255
+
+        return (X * random_matrix).sum()
+
+    epsilon = X.new_ones(batch_size) * epsilon
+    C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
+    normalization = X.view(batch_size, -1).sum(-1).view(batch_size, 1, 1, 1)
+    X_ = X.clone()
+
+    X_best = X.clone()
+    err_best = err = net(normalize(X)).max(1)[1] != y
+    epsilon_best = epsilon.clone()
+
+    t = 0
+    while True:
+        X_.requires_grad = True
+        opt = optim.SGD([X_], lr=0.1)
+        loss = nn.CrossEntropyLoss()(net(normalize(X_)), y)
+        opt.zero_grad()
+        loss.backward()
+
+        with torch.no_grad():
+            # take a step
+            if norm == 'linfinity':
+                X_[~err] += alpha * torch.sign(X_.grad[~err])
+            elif norm == 'l2':
+                X_[~err] += (alpha * X_.grad / (X_.grad.view(X.size(0), -1).norm(dim=1).view(X.size(0), 1, 1, 1)))[~err]
+            elif norm == 'wasserstein':
+                sd_normalization = X_.view(batch_size, -1).sum(-1).view(batch_size, 1, 1, 1)
+                X_[~err] = (conjugate_sinkhorn(X_.clone() / sd_normalization,
+                                               X_.grad, C, alpha, regularization,
+                                               verbose=verbose, maxiters=sinkhorn_maxiters
+                                               ) * sd_normalization)[~err]
+            else:
+                raise ValueError("Unknown norm")
+
+            # project onto ball
+            if ball == 'wasserstein':
+                X_[~err] = (projected_sinkhorn(X.clone() / normalization,
+                                               X_.detach() / normalization,
+                                               C,
+                                               epsilon,
+                                               regularization,
+                                               verbose=verbose,
+                                               maxiters=sinkhorn_maxiters) * normalization)[~err]
+            elif ball == 'linfinity':
+                X_ = torch.min(X_, X + epsilon.view(X.size(0), 1, 1, 1))
+                X_ = torch.max(X_, X - epsilon.view(X.size(0), 1, 1, 1))
+            else:
+                raise ValueError("Unknown ball")
+            X_ = torch.clamp(X_, min=xmin, max=xmax)
+
+            err = (net(normalize(X_)).max(1)[1] != y)
+            err_rate = err.sum().item() / batch_size
+            if err_rate > err_best.sum().item() / batch_size:
+                X_best = X_.clone()
+                err_best = err
+                epsilon_best = epsilon.clone()
+
+            if verbose and t % verbose == 0:
+                print(t, loss.item(), epsilon.mean().item(), err_rate)
+
+            t += 1
+            if err_rate == 1 or t == maxiters:
+                break
+
+            if t > 0 and t % epsilon_iters == 0:
+                epsilon[~err] *= epsilon_factor
+
+    epsilon_best[~err] = float('inf')
+    return X_best, err_best, epsilon_best
+
+
+
+
+
+
+def ADef_linearized_wasserstein_perturbation(radius):
+    # @TODO use ADef linearization for plane and take perturbations with repsect to Wasserstein ball around sample
+    pass
