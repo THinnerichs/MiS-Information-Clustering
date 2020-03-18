@@ -480,7 +480,8 @@ def greyscale_sinkhorn_wasserstein_ball_perturbation(X,
                                                      norm='wasserstein'
                                                      ):
     """
-    Use iterated Sinkhorn iterations over arbitrary loss function (e.g. categorial cross entropy with random label)
+    Use iterated Sinkhorn iterations over arbitrary loss function (e.g. categorial cross entropy with random label).
+    Call with torchvision.transforms.Lambda to use as torchvision.Transformation.
 
     :return:
     """
@@ -575,7 +576,7 @@ def greyscale_random_smoothed_deformation(X,
 
     """
     Apply a random deformation within deformation_range smoothed by a gaussian filter
-    with sigma=sigma.
+    with sigma=sigma. Call with torchvision.transforms.Lambda to use as torchvision.Transformation.
 
     :param X:
     :param deformation_range:
@@ -617,12 +618,6 @@ def greyscale_random_smoothed_deformation(X,
                 return_batch[image_index, i, j] = X[image_index,
                                                     x_index,
                                                     y_index]
-
-    return return_batch
-
-
-
-
 
 
 def ADef_linearized_wasserstein_perturbation(radius):
