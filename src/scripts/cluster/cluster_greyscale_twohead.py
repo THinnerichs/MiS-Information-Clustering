@@ -22,7 +22,7 @@ from src.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
 from src.utils.cluster.IID_losses import IID_loss
 from src.utils.cluster.render import save_progress
 
-from src.custom_datasets import Sinkhorn_deformed_Dataset
+from src.custom_datasets import Sinkhorn_deformed_MNIST_Dataset
 
 """
   Fully unsupervised clustering ("IIC" = "IID").
@@ -143,10 +143,10 @@ if not os.path.exists(config.out_dir):
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-data = Sinkhorn_deformed_Dataset(config=config,
-                                 device=device,
-                                 tf1=None,
-                                 tf2=None)
+data = Sinkhorn_deformed_MNIST_Dataset(config=config,
+                                       device=device,
+                                       tf1=None,
+                                       tf2=None)
 
 if config.restart:
   config_name = "config.pickle"

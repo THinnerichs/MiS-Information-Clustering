@@ -5,6 +5,7 @@ import random
 
 from src.transformations import *
 import torchvision
+import torchvision.transforms as transforms
 
 
 class Gaussian2DDataset(Dataset):
@@ -33,16 +34,21 @@ class Gaussian2DDataset(Dataset):
         return self.samples_per_cluster * self.num_clusters
 
 
-class Sinkhorn_deformed_Dataset(Dataset):
-    def __init__(self, config, device, tf1, tf2, processing_batch_size=128, target_transform=None, radius=0.01):
+class Sinkhorn_deformed_MNIST_Dataset(Dataset):
+    def __init__(self, config, device, tf1, tf2, target_transform=None, processing_batch_size=128, radius=0.01):
 
         print("Building Sinkhorn deformed dataset...")
         # Take images from MNIST and transform each batch with the iterated Sinkhorn attack
+        transform_train = transforms.Compose([
+            target_transform,
+            transforms.ToTensor(),
+        ])
         dataset = torchvision.datasets.MNIST(
             root=config.dataset_root,
             transform=tf2,
-            target_transform=target_transform,
+            target_transform=transform_train,
             download=True)
+
 
         trainloader = torch.utils.data.DataLoader(dataset, batch_size=128, shuffle=True, num_workers=2)
 
