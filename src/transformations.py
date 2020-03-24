@@ -461,6 +461,7 @@ def greyscale_ADef_linf_norm_transform(config):
     return tf1, tf2, tf3
 
 def greyscale_sinkhorn_ball_perturbation(X,
+                                         num_classes,
                                          epsilon=0.01,
                                          epsilon_iters=10,
                                          epsilon_factor=1.1,
@@ -483,6 +484,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
     Call with torchvision.transforms.Lambda to use as torchvision.Transformation.
 
     :param X:
+    :param num_classes:
     :param epsilon:
     :param epsilon_iters:
     :param epsilon_factor:
@@ -520,10 +522,8 @@ def greyscale_sinkhorn_ball_perturbation(X,
             input_matrix = input_batch[i]
             input_matrix /= 255
 
-
-
             return_list+= [(input_matrix * random_matrix).sum()]
-        return torch.cat(return_list, 0)
+        return torch.Tensor(return_list)
 
     epsilon = X.new_ones(batch_size) * epsilon
     C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
