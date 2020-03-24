@@ -460,25 +460,25 @@ def greyscale_ADef_linf_norm_transform(config):
 
     return tf1, tf2, tf3
 
-def greyscale_sinkhorn_wasserstein_ball_perturbation(X,
-                                                     num_classes,
-                                                     radius=0.1,
-                                                     epsilon=0.01,
-                                                     epsilon_iters=10,
-                                                     epsilon_factor=1.1,
-                                                     p=2,
-                                                     kernel_size=5,
-                                                     maxiters=400,
-                                                     alpha=0.1,
-                                                     xmin=0,
-                                                     xmax=1,
-                                                     normalize=lambda x:x,
-                                                     verbose=0,
-                                                     regularization=1000,
-                                                     sinkhorn_maxiters=400,
-                                                     ball='wasserstein',
-                                                     norm='wasserstein'
-                                                     ):
+def greyscale_sinkhorn_ball_perturbation(X,
+                                         num_classes,
+                                         radius=0.1,
+                                         epsilon=0.01,
+                                         epsilon_iters=10,
+                                         epsilon_factor=1.1,
+                                         p=2,
+                                         kernel_size=5,
+                                         maxiters=400,
+                                         alpha=0.1,
+                                         xmin=0,
+                                         xmax=1,
+                                         normalize=lambda x:x,
+                                         verbose=0,
+                                         regularization=1000,
+                                         sinkhorn_maxiters=400,
+                                         ball='wasserstein',
+                                         norm='wasserstein'
+                                         ):
     """
     Use iterated Sinkhorn iterations over arbitrary loss function (e.g. categorial cross entropy with random label).
     Call with torchvision.transforms.Lambda to use as torchvision.Transformation.
