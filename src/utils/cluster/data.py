@@ -5,7 +5,7 @@ import torch
 import torchvision
 from torch.utils.data import ConcatDataset
 
-from src.custom_datasets.clustering.truncated_dataset import TruncatedDataset
+from src.datasets.clustering.truncated_dataset import TruncatedDataset
 from src.utils.cluster.transforms import sobel_make_transforms, \
   greyscale_make_transforms
 from src.utils.semisup.dataset import TenCropAndFinish
