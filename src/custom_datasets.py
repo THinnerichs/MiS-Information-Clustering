@@ -42,7 +42,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         transform_train = []
         if target_transform:
             transform_train+= target_transform
-        transform_train+=transforms.ToTensor()
+        transform_train += [transforms.ToTensor()]
         transform_train = transforms.Compose(transform_train)
 
         dataset = torchvision.datasets.MNIST(
