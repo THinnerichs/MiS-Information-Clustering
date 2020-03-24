@@ -48,7 +48,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         dataset = torchvision.datasets.MNIST(
             root=config.dataset_root,
             transform=tf2,
-            target_transform=transform_train,
+            # target_transform=transform_train,
             download=True)
 
 
