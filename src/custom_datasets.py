@@ -41,16 +41,15 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         # Take images from MNIST and transform each batch with the iterated Sinkhorn attack
         transform_train = []
         if target_transform:
-            transform_train+= target_transform
+            transform_train+= tf2
         transform_train += [transforms.ToTensor()]
         transform_train = transforms.Compose(transform_train)
 
 
         dataset = torchvision.datasets.MNIST(
             root=config.dataset_root,
-            transform=tf2,
+            transform=transform_train,
             train=True,
-            target_transform=transform_train,
             download=True)
 
 
