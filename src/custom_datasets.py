@@ -36,6 +36,8 @@ class Gaussian2DDataset(Dataset):
 
 class Sinkhorn_deformed_MNIST_Dataset(Dataset):
     def __init__(self, config, device, tf1, tf2, target_transform=None, processing_batch_size=128, radius=0.01):
+        print(device)
+        raise Exception
 
         print("Building Sinkhorn deformed dataset...")
         # Take images from MNIST and transform each batch with the iterated Sinkhorn attack
