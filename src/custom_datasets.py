@@ -75,7 +75,3 @@ class Sinkhorn_deformed_Dataset(Dataset):
 
     def __len__(self):
         return len(self.data)
-<<<<<<< HEAD
-=======
-
->>>>>>> newbranch
