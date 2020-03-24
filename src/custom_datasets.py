@@ -43,16 +43,18 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         if target_transform:
             transform_train+= target_transform
         transform_train += [transforms.ToTensor()]
+        print(len(transform_train))
         transform_train = transforms.Compose(transform_train)
+
 
         dataset = torchvision.datasets.MNIST(
             root=config.dataset_root,
             transform=tf2,
-            # target_transform=transform_train,
+            target_transform=transform_train,
             download=True)
 
 
-        trainloader = torch.utils.data.DataLoader(dataset, batch_size=128, shuffle=True, num_workers=2)
+        trainloader = torch.utils.data.DataLoader(dataset, batch_size=128, shuffle=True, num_workers=1)
 
 
         batch_list = []
