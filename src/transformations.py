@@ -624,11 +624,11 @@ def greyscale_random_smoothed_deformation(X,
         for i in range(height):
             for j in range(width):
                 # Check whether indices are still within bounds
-                x_index = j + x_deformation_matrix[i,j]
+                x_index = j + x_filtered[i,j]
                 x_index = width-1 if x_index >= width else x_index
                 x_index = 0 if x_index < 0 else x_index
 
-                y_index = j + y_deformation_matrix[i, j]
+                y_index = j + y_filtered[i, j]
                 y_index = height - 1 if y_index >= height else y_index
                 y_index = 0 if y_index < 0 else y_index
 
