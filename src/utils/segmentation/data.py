@@ -4,10 +4,10 @@ from datetime import datetime
 import torch
 from torch.utils.data import ConcatDataset
 
-from src.datasets.segmentation import DoerschDataset
-from src.datasets.segmentation import cocostuff
-from src.datasets.segmentation import potsdam
-from src.datasets.segmentation import duckietown
+from src.custom_datasets.segmentation import DoerschDataset
+from src.custom_datasets.segmentation import cocostuff
+from src.custom_datasets.segmentation import potsdam
+from src.custom_datasets.segmentation import duckietown
 
 
 

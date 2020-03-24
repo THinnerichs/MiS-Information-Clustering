@@ -22,7 +22,7 @@ from src.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
 from src.utils.cluster.IID_losses import IID_loss
 from src.utils.cluster.render import save_progress
 
-from src.datasets import Sinkhorn_deformed_Dataset
+from src.custom_datasets import Sinkhorn_deformed_Dataset
 
 """
   Fully unsupervised clustering ("IIC" = "IID").

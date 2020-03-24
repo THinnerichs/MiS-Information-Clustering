@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torchvision
 
-from datasets import *
+from custom_datasets import *
 from transformations import *
 
 
