@@ -22,6 +22,8 @@ from src.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
 from src.utils.cluster.IID_losses import IID_loss
 from src.utils.cluster.render import save_progress
 
+from src.datasets import Sinkhorn_deformed_Dataset
+
 """
   Fully unsupervised clustering ("IIC" = "IID").
   Train and test script (greyscale datasets).
@@ -54,6 +56,7 @@ parser.add_argument("--lr_mult", type=float, default=0.1)
 parser.add_argument("--num_epochs", type=int, default=1000)
 parser.add_argument("--batch_sz", type=int, default=240)  # num pairs
 parser.add_argument("--num_dataloaders", type=int, default=3)
+parser.add_argument("--num_sinkhorn_dataloaders", type=int, default=3)
 parser.add_argument("--num_sub_heads", type=int, default=5)
 
 parser.add_argument("--out_root", type=str,
@@ -137,6 +140,13 @@ config.mapping_test_partitions = [True, False]
 
 if not os.path.exists(config.out_dir):
   os.makedirs(config.out_dir)
+
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+data = Sinkhorn_deformed_Dataset(config=config,
+                                 device=device,
+                                 tf1=None,
+                                 tf2=None)
 
 if config.restart:
   config_name = "config.pickle"

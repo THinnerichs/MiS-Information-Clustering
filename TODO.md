@@ -34,16 +34,18 @@ Three methods to obtain perturbations (See photo of blackboard for explanation):
 -----------------------------------------
 
 Talk with Guido on 13.03.2020:
-- How are things in Leipzig?
 - Currently running experiments -> Take quite long
   - Accuracy over different radii
 - What to do next?
   - Check on medical dataset?
-  - 
 
 - Summary
   - continuity of the model
   - perturbation model
+
+
+1. build perturbations get them running for MNIST model
+2. build own model
 
 
 -----------------------------------------

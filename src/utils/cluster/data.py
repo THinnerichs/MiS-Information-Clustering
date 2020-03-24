@@ -301,6 +301,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
                        torch.utils.data.sampler.SequentialSampler))
   dataloaders = [train_dataloader]
 
+  # Create dataloaders for standard transformations, i.e. rotation, ...
   for d_i in range(config.num_dataloaders):
     print("Creating auxiliary dataloader ind %d out of %d time %s" %
           (d_i, config.num_dataloaders, datetime.now()))
@@ -345,6 +346,15 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
                          torch.utils.data.sampler.SequentialSampler))
     assert (len(train_dataloader) == len(train_tf_dataloader))
     dataloaders.append(train_tf_dataloader)
+
+  # Create dataloaders for sinkhorn based deformations
+  for d_i in range(config.num_sinkhorn_dataloaders):
+    print("Creating auxiliary dataloader ind %d out of %d time %s" %
+          (d_i, config.num_sinkhorn_dataloaders, datetime.now()))
+
+
+
+
 
   num_train_batches = len(dataloaders[0])
   print("Length of datasets vector %d" % len(dataloaders))
