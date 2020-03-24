@@ -461,6 +461,11 @@ def greyscale_ADef_linf_norm_transform(config):
     return tf1, tf2, tf3
 
 def greyscale_sinkhorn_ball_perturbation(X,
+<<<<<<< HEAD
+=======
+                                         num_classes,
+                                         radius=0.1,
+>>>>>>> newbranch
                                          epsilon=0.01,
                                          epsilon_iters=10,
                                          epsilon_factor=1.1,
@@ -477,7 +482,10 @@ def greyscale_sinkhorn_ball_perturbation(X,
                                          ball='wasserstein',
                                          norm='wasserstein'
                                          ):
+<<<<<<< HEAD
 
+=======
+>>>>>>> newbranch
     """
     Use iterated Sinkhorn iterations over an arbitrary loss function (e.g. categorial cross entropy with random label) over an arbitrary model.
     Call with torchvision.transforms.Lambda to use as torchvision.Transformation.

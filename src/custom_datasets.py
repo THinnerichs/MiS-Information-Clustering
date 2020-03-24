@@ -3,8 +3,13 @@ from torch.utils.data.dataset import Dataset
 import numpy as np
 import random
 
+<<<<<<< HEAD
 from src.transformations import *
 import torchvision
+=======
+import torchvision
+from src.transformations import *
+>>>>>>> newbranch
 
 
 class Gaussian2DDataset(Dataset):
@@ -75,3 +80,7 @@ class Sinkhorn_deformed_Dataset(Dataset):
 
     def __len__(self):
         return len(self.data)
+<<<<<<< HEAD
+=======
+
+>>>>>>> newbranch
