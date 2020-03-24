@@ -514,10 +514,16 @@ def greyscale_sinkhorn_ball_perturbation(X,
     # randomly initialize y
     y = torch.rand(0, 2, (batch_size))
 
-    def net(X):
-        X /= 255
+    def net(input_batch):
+        return_list = []
+        for i in range(batch_size):
+            input_matrix = input_batch[i]
+            input_matrix /= 255
 
-        return (X * random_matrix).sum()
+
+
+            return_list+= [(input_matrix * random_matrix).sum()]
+        return torch.cat(return_list, 0)
 
     epsilon = X.new_ones(batch_size) * epsilon
     C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
