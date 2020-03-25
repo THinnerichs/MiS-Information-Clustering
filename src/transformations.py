@@ -522,10 +522,8 @@ def greyscale_sinkhorn_ball_perturbation(X,
             result = (input_matrix * random_matrix).sum() * 10
             result = result - 1 if result > 1 else result
             return_list+= [result]
-            if result > 1:
-                print(result)
 
-        return torch.Tensor(return_list)
+        return torch.Tensor(return_list).view(-1,1)
 
     epsilon = X.new_ones(batch_size) * epsilon
     C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
