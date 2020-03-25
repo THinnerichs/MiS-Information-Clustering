@@ -45,6 +45,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         transform_train = transforms.Compose(transform_train)
 
 
+        self.num_classes = 10
         dataset = torchvision.datasets.MNIST(
             root=config.dataset_root,
             transform=transform_train,
@@ -61,6 +62,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
 
             inputs, targets = inputs.to(device), targets.to(device)
             inputs_pgd, _, epsilons = greyscale_sinkhorn_ball_perturbation(inputs,
+                                                                           num_classes=self.num_classes,
                                                                            epsilon_factor=1.4,
                                                                            epsilon=radius,
                                                                            maxiters=50,
