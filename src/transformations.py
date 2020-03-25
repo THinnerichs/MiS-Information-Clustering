@@ -518,7 +518,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
         return_list = []
         for i in range(batch_size):
             input_matrix = input_batch[i]
-            input_matrix /= 255
+            # input_matrix /= 255
 
             return_list+= [(input_matrix * random_matrix).sum()]
             print((input_matrix * random_matrix).sum())
