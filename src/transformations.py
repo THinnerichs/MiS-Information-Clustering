@@ -521,7 +521,9 @@ def greyscale_sinkhorn_ball_perturbation(X,
             input_matrix /= 255
 
             return_list+= [(input_matrix * random_matrix).sum()]
-        return torch.Tensor(return_list)
+            print((input_matrix * random_matrix).sum())
+
+        return torch.Tensor(return_list).view(-1,1)
 
     epsilon = X.new_ones(batch_size) * epsilon
     C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
@@ -531,7 +533,9 @@ def greyscale_sinkhorn_ball_perturbation(X,
     X_best = X.clone()
     result = net(normalize(X))
     print(result.size())
-    err_best = err = net(normalize(X)).round().view(-1,1) != y
+    raise Exception
+
+    err_best = err = net(normalize(X)) != y
     epsilon_best = epsilon.clone()
 
     t = 0
