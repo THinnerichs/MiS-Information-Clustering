@@ -461,6 +461,7 @@ def greyscale_ADef_linf_norm_transform(config):
     return tf1, tf2, tf3
 
 def greyscale_sinkhorn_ball_perturbation(X,
+                                         num_classes,
                                          epsilon=0.01,
                                          epsilon_iters=10,
                                          epsilon_factor=1.1,
@@ -483,6 +484,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
     Call with torchvision.transforms.Lambda to use as torchvision.Transformation.
 
     :param X:
+    :param num_classes:
     :param epsilon:
     :param epsilon_iters:
     :param epsilon_factor:
@@ -506,14 +508,27 @@ def greyscale_sinkhorn_ball_perturbation(X,
     batch_size = X.size(0)
 
     # initialize net as multiplication of image with random matrix
+    '''
     np.random.seed(42)
-    random_matrix = torch.from_numpy(np.random.random_sample(list(X.size())))
+    random_matrix = torch.from_numpy(np.random.random_sample(list(X.size())[1:]))
     downscaling_factor = np.prod(list(X.size())[1:])
     random_matrix /= downscaling_factor
+    '''
 
     # randomly initialize y
     y = torch.rand((batch_size)).round().long()
 
+    from functools import reduce
+    import operator
+    def prod(iterable):
+        return reduce(operator.mul, iterable, 1)
+
+    net = nn.Sequential(
+        Flatten(),
+        nn.Linear(prod(list(X.size())[1:]), num_classes)
+        )
+
+    '''
     def net(input_batch):
         return_list = []
         for i in range(batch_size):
@@ -524,6 +539,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
             return_list+= [(result, result-1)]
 
         return torch.Tensor(return_list)
+    '''
 
     epsilon = X.new_ones(batch_size) * epsilon
     C = wasserstein_cost(X, p=p, kernel_size=kernel_size)
@@ -541,7 +557,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
         opt = optim.SGD([X_], lr=0.1)
         loss = nn.CrossEntropyLoss()(net(normalize(X_)), y)
         opt.zero_grad()
-        # loss.backward()
+        loss.backward()
 
         with torch.no_grad():
             # take a step
@@ -560,11 +576,6 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
             # project onto ball
             if ball == 'wasserstein':
-                print('Test')
-                print(X.clone().size(), normalization.size())
-                print('detach', X_.detach().size())
-                print('normalized detach', (X_.detach() / normalization).size())
-
                 X_[~err] = (projected_sinkhorn(X.clone() / normalization,
                                                X_.detach() / normalization,
                                                C,
@@ -598,6 +609,11 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     epsilon_best[~err] = float('inf')
     return X_best, err_best, epsilon_best
+
+
+class Flatten(nn.Module):
+    def forward(self, x):
+        return x.view(x.size(0), -1)
 
 
 def greyscale_random_smoothed_deformation(X,
