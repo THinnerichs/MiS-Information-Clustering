@@ -512,7 +512,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
     random_matrix /= downscaling_factor
 
     # randomly initialize y
-    y = torch.rand((batch_size)).round()
+    y = torch.rand((batch_size)).round().long()
 
     def net(input_batch):
         return_list = []
