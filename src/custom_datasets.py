@@ -63,6 +63,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
             inputs, targets = inputs.to(device), targets.to(device)
             inputs_pgd, _, epsilons = greyscale_sinkhorn_ball_perturbation(inputs,
                                                                            num_classes=self.num_classes,
+                                                                           device=device,
                                                                            epsilon_factor=1.4,
                                                                            epsilon=radius,
                                                                            maxiters=50,
