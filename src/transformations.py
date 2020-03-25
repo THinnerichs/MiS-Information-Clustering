@@ -534,7 +534,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
     result = net(normalize(X))
     print(result.size(), y.size())
 
-    err_best = err = net(normalize(X))[:, 0] != y
+    err_best = err = net(normalize(X)).max(1)[1] != y
     epsilon_best = epsilon.clone()
 
     t = 0
@@ -543,7 +543,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
         opt = optim.SGD([X_], lr=0.1)
         loss = nn.CrossEntropyLoss()(net(normalize(X_)), y)
         opt.zero_grad()
-        loss.backward()
+        # loss.backward()
 
         with torch.no_grad():
             # take a step
