@@ -536,7 +536,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
     epsilon_best = epsilon.clone()
 
     print('Test')
-    print(X_.size(), normalization.size())
+    print(X.clone().size(), normalization.size())
     print('detach', X_.detach().size())
     print('normalized detach', (X_.detach()/normalization).size())
 
