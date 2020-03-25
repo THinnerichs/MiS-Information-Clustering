@@ -537,8 +537,8 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     print('Test')
     print(X_, normalization)
-    print(X_.detach())
-    print(X_.detach()/normalization)
+    print('detach', X_.detach())
+    print('normalized detach', X_.detach()/normalization)
 
     t = 0
     while True:
