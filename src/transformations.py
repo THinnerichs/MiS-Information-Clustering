@@ -535,11 +535,6 @@ def greyscale_sinkhorn_ball_perturbation(X,
     err_best = err = net(normalize(X)).max(1)[1] != y
     epsilon_best = epsilon.clone()
 
-    print('Test')
-    print(X.clone().size(), normalization.size())
-    print('detach', X_.detach().size())
-    print('normalized detach', (X_.detach()/normalization).size())
-
     t = 0
     while True:
         X_.requires_grad = True
@@ -565,6 +560,11 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
             # project onto ball
             if ball == 'wasserstein':
+                print('Test')
+                print(X.clone().size(), normalization.size())
+                print('detach', X_.detach().size())
+                print('normalized detach', (X_.detach() / normalization).size())
+
                 X_[~err] = (projected_sinkhorn(X.clone() / normalization,
                                                X_.detach() / normalization,
                                                C,
