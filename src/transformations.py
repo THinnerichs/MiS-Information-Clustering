@@ -518,10 +518,12 @@ def greyscale_sinkhorn_ball_perturbation(X,
         return_list = []
         for i in range(batch_size):
             input_matrix = input_batch[i]
-            # input_matrix /= 255
-
-            return_list+= [(input_matrix * random_matrix).sum()]
-            print((input_matrix * random_matrix).sum())
+            input_matrix /= 255
+            result = (input_matrix * random_matrix).sum() * 10
+            result = result - 1 if result > 1 else result
+            return_list+= [result]
+            if result > 1:
+                print(result)
 
         return torch.Tensor(return_list).view(-1,1)
 
