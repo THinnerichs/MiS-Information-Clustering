@@ -462,6 +462,7 @@ def greyscale_ADef_linf_norm_transform(config):
 
 def greyscale_sinkhorn_ball_perturbation(X,
                                          num_classes,
+                                         device,
                                          epsilon=0.01,
                                          epsilon_iters=10,
                                          epsilon_factor=1.1,
@@ -485,6 +486,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     :param X:
     :param num_classes:
+    :param device:
     :param epsilon:
     :param epsilon_iters:
     :param epsilon_factor:
@@ -528,6 +530,8 @@ def greyscale_sinkhorn_ball_perturbation(X,
         nn.Linear(prod(list(X.size())[1:]), num_classes)
         )
 
+    net = net.to(device)
+
     '''
     def net(input_batch):
         return_list = []
@@ -553,6 +557,7 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     t = 0
     while True:
+        print('Step:', t)
         X_.requires_grad = True
         opt = optim.SGD([X_], lr=0.1)
         loss = nn.CrossEntropyLoss()(net(normalize(X_)), y)

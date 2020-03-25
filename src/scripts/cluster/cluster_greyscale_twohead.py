@@ -142,8 +142,7 @@ if not os.path.exists(config.out_dir):
   os.makedirs(config.out_dir)
 
 
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-device = torch.device('cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 data = Sinkhorn_deformed_MNIST_Dataset(config=config,
                                        device=device,
                                        tf1=None,
