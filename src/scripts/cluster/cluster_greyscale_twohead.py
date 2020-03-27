@@ -56,8 +56,14 @@ parser.add_argument("--lr_mult", type=float, default=0.1)
 parser.add_argument("--num_epochs", type=int, default=1000)
 parser.add_argument("--batch_sz", type=int, default=240)  # num pairs
 parser.add_argument("--num_dataloaders", type=int, default=3)
-parser.add_argument("--num_sinkhorn_dataloaders", type=int, default=3)
 parser.add_argument("--num_sub_heads", type=int, default=5)
+
+# Sinkhorn config arguments
+parser.add_argument("--num_sinkhorn_dataloaders", type=int, default=3)
+parser.add_argument("--sinkhorn_batch_size", type=int, default=256)
+parser.add_argument("--sinkhorn_wasserstein_ball", type=float, default=0.01)
+
+
 
 parser.add_argument("--out_root", type=str,
                     default="/scratch/shared/slow/xuji/iid_private")
@@ -142,20 +148,24 @@ if not os.path.exists(config.out_dir):
   os.makedirs(config.out_dir)
 
 
+# Sinkhorn data preparation
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/data.pkl'
+sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/' +\
+  str(config.sinkhorn_wasserstein_ball) + '_WS_radius' +\
+  '_data'
 data = None
 if not os.path.isfile(sinkhorn_dataset_path):
   data = Sinkhorn_deformed_MNIST_Dataset(config=config,
                                          device=device,
                                          tf1=None,
                                          tf2=None,
-                                         processing_batch_size=1024)
-  with open(file=sinkhorn_dataset_path, mode='wb') as f:
+                                         processing_batch_size=config.sinkhorn_batch_size,
+                                         radius=config.sinkhorn_wasserstein_ball)
+  with open(file=sinkhorn_dataset_path+'.pkl', mode='wb') as f:
     pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 else:
-  with open(file=sinkhorn_dataset_path, mode='rb') as f:
+  with open(file=sinkhorn_dataset_path+'.pkl', mode='rb') as f:
     data = pickle.load(f)
 
 raise Exception
