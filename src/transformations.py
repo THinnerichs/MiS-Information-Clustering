@@ -8,6 +8,8 @@ import torchvision
 import torchvision.transforms.functional as tf
 from PIL import Image
 from torch.autograd import Variable
+import torch.backends.cudnn as cudnn
+
 
 from projected_sinkhorn import conjugate_sinkhorn, projected_sinkhorn, wasserstein_cost
 
@@ -509,28 +511,25 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     batch_size = X.size(0)
 
-    # initialize net as multiplication of image with random matrix
-    '''
-    np.random.seed(42)
-    random_matrix = torch.from_numpy(np.random.random_sample(list(X.size())[1:]))
-    downscaling_factor = np.prod(list(X.size())[1:])
-    random_matrix /= downscaling_factor
-    '''
-
     # randomly initialize y
     y = torch.rand((batch_size)).round().long()
+    y = y.to(device)
 
     from functools import reduce
     import operator
     def prod(iterable):
         return reduce(operator.mul, iterable, 1)
 
+    # initialize net as multiplication of image with random matrix
     net = nn.Sequential(
         Flatten(),
         nn.Linear(prod(list(X.size())[1:]), num_classes)
         )
 
     net = net.to(device)
+    if device == 'cuda':
+        net = torch.nn.DataParallel(net)
+        cudnn.benchmark = True
 
     '''
     def net(input_batch):
