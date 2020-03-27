@@ -143,10 +143,22 @@ if not os.path.exists(config.out_dir):
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-data = Sinkhorn_deformed_MNIST_Dataset(config=config,
-                                       device=device,
-                                       tf1=None,
-                                       tf2=None)
+
+sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/data.pkl'
+data = None
+if not os.path.isfile(sinkhorn_dataset_path):
+  data = Sinkhorn_deformed_MNIST_Dataset(config=config,
+                                         device=device,
+                                         tf1=None,
+                                         tf2=None,
+                                         processing_batch_size=1024)
+  with open(file=sinkhorn_dataset_path, mode='wb') as f:
+    pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+else:
+  with open(file=sinkhorn_dataset_path, mode='rb') as f:
+    data = pickle.load(f)
+
+raise Exception
 
 if config.restart:
   config_name = "config.pickle"
