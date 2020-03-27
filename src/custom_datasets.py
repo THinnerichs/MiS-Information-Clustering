@@ -58,7 +58,7 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
 
         batch_list = []
         for batch_idx, (inputs, targets) in enumerate(trainloader):
-            print("Sinkhorn epoch: {}".format(batch_idx))
+            print("Sinkhorn epoch: {}/{}".format(batch_idx, len(trainloader)))
 
             inputs, targets = inputs.to(device), targets.to(device)
             inputs_pgd, _, epsilons = greyscale_sinkhorn_ball_perturbation(inputs,
