@@ -61,7 +61,7 @@ parser.add_argument("--num_sub_heads", type=int, default=5)
 # Sinkhorn config arguments
 parser.add_argument("--num_sinkhorn_dataloaders", type=int, default=3)
 parser.add_argument("--sinkhorn_batch_size", type=int, default=256)
-parser.add_argument("--sinkhorn_wasserstein_ball", type=float, default=0.01)
+parser.add_argument("--sinkhorn_WS_radius", type=float, default=0.01)
 
 
 
@@ -152,7 +152,7 @@ if not os.path.exists(config.out_dir):
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/' +\
-  str(config.sinkhorn_wasserstein_ball) + '_WS_radius' +\
+  str(config.sinkhorn_WS_radius) + '_WS_radius' +\
   '_data'
 data = None
 if not os.path.isfile(sinkhorn_dataset_path):
@@ -160,8 +160,8 @@ if not os.path.isfile(sinkhorn_dataset_path):
                                          device=device,
                                          tf1=None,
                                          tf2=None,
-                                         processing_batch_size=config.sinkhorn_batch_size,
-                                         radius=config.sinkhorn_wasserstein_ball)
+                                         processing_batch_size=int(config.sinkhorn_batch_size),
+                                         radius=config.sinkhorn_WS_radius)
   with open(file=sinkhorn_dataset_path+'.pkl', mode='wb') as f:
     pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 else:
