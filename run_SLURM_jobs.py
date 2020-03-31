@@ -44,7 +44,7 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
               "--batch_sz 4096 " \
               "--num_dataloaders 5 " \
               "--num_sub_heads 5 " \
-              "--num_sinkhorn_dataloaders " + str(num_sinkhorn_dataloaders)_+ " " \
+              "--num_sinkhorn_dataloaders " + str(num_sinkhorn_dataloaders) + " " \
               "--sinkhorn_batch_size " + str(batch_size) + " " \
               "--sinkhorn_WS_radius " + str(radius)+" "\
               "--crop_orig " \
