@@ -12,6 +12,8 @@ from src.utils.semisup.dataset import TenCropAndFinish
 from .general import reorder_train_deterministic
 
 from src.utils.cluster.custom_datasets import Gaussian2DDataset
+import src.custom_datasets as custom_data
+
 
 # Used by sobel and greyscale clustering twohead scripts -----------------------
 
@@ -99,6 +101,93 @@ def cluster_twohead_create_dataloaders(config):
 
   return dataloaders_head_A, dataloaders_head_B, \
          mapping_assignment_dataloader, mapping_test_dataloader
+
+def cluster_twohead_create_dataloaders_sinkhorn(config):
+    assert (config.mode == "IID")
+    assert (config.twohead)
+
+    target_transform = None
+
+    if "CIFAR" in config.dataset:
+        config.train_partitions_head_A = [True, False]
+        config.train_partitions_head_B = config.train_partitions_head_A
+
+        config.mapping_assignment_partitions = [True, False]
+        config.mapping_test_partitions = [True, False]
+
+        if config.dataset == "CIFAR10":
+            dataset_class = torchvision.datasets.CIFAR10
+        elif config.dataset == "CIFAR100":
+            dataset_class = torchvision.datasets.CIFAR100
+        elif config.dataset == "CIFAR20":
+            dataset_class = torchvision.datasets.CIFAR100
+            target_transform = _cifar100_to_cifar20
+        else:
+            assert (False)
+
+        # datasets produce either 2 or 5 channel images based on config.include_rgb
+        tf1, tf2, tf3 = sobel_make_transforms(config)
+
+    elif config.dataset == "STL10":
+        assert (config.mix_train)
+        if not config.stl_leave_out_unlabelled:
+            print("adding unlabelled data for STL10")
+            config.train_partitions_head_A = ["train+unlabeled", "test"]
+        else:
+            print("not using unlabelled data for STL10")
+            config.train_partitions_head_A = ["train", "test"]
+
+        config.train_partitions_head_B = ["train", "test"]
+
+        config.mapping_assignment_partitions = ["train", "test"]
+        config.mapping_test_partitions = ["train", "test"]
+
+        dataset_class = torchvision.datasets.STL10
+
+        # datasets produce either 2 or 5 channel images based on config.include_rgb
+        tf1, tf2, tf3 = sobel_make_transforms(config)
+
+    elif config.dataset == "MNIST":
+        config.train_partitions_head_A = [True, False]
+        config.train_partitions_head_B = config.train_partitions_head_A
+
+        config.mapping_assignment_partitions = [True, False]
+        config.mapping_test_partitions = [True, False]
+
+        dataset_class = torchvision.datasets.MNIST
+
+        tf1, tf2, tf3 = greyscale_make_transforms(config)
+
+    else:
+        assert (False)
+
+    print("Making datasets with %s and %s" % (dataset_class, target_transform))
+    sys.stdout.flush()
+
+    dataloaders_head_A = \
+        _create_dataloaders(config, dataset_class, tf1, tf2,
+                            partitions=config.train_partitions_head_A,
+                            sinkhorn_dataloaders=True,
+                            target_transform=target_transform)
+
+    dataloaders_head_B = \
+        _create_dataloaders(config, dataset_class, tf1, tf2,
+                            partitions=config.train_partitions_head_B,
+                            sinkhorn_dataloaders=True,
+                            target_transform=target_transform)
+
+    mapping_assignment_dataloader = \
+        _create_mapping_loader(config, dataset_class, tf3,
+                               partitions=config.mapping_assignment_partitions,
+                               target_transform=target_transform)
+
+    mapping_test_dataloader = \
+        _create_mapping_loader(config, dataset_class, tf3,
+                               partitions=config.mapping_test_partitions,
+                               target_transform=target_transform)
+
+    return dataloaders_head_A, dataloaders_head_B, \
+           mapping_assignment_dataloader, mapping_test_dataloader
 
 
 # Used by sobel and greyscale clustering single head scripts -------------------
@@ -258,6 +347,7 @@ def make_MNIST_data(config, tf1=None, tf2=None, tf3=None,
 
 def _create_dataloaders(config, dataset_class, tf1, tf2,
                         partitions,
+                        sinkhorn_dataloaders=False,
                         target_transform=None,
                         shuffle=False):
   train_imgs_list = []
@@ -348,13 +438,59 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
     dataloaders.append(train_tf_dataloader)
 
   # Create dataloaders for sinkhorn based deformations
-  for d_i in range(config.num_sinkhorn_dataloaders):
-    print("Creating auxiliary dataloader ind %d out of %d time %s" %
-          (d_i, config.num_sinkhorn_dataloaders, datetime.now()))
+  if sinkhorn_dataloaders:
+    for d_i in range(config.num_sinkhorn_dataloaders):
+      print("Creating auxiliary dataloader ind %d out of %d time %s" %
+            (d_i, config.num_sinkhorn_dataloaders, datetime.now()))
+      sys.stdout.flush()
 
+      train_tf_imgs_list = []
+      for train_partition in partitions:
+        if "STL10" == config.dataset:
+          print("STL10 not supported yet.")
+          raise Exception
+          train_imgs_tf_curr = dataset_class(
+            root=config.dataset_root,
+            transform=tf2,  # random per call
+            split=train_partition,
+            target_transform=target_transform)
+        elif "MNIST" == config.dataset:
+          train_imgs_tf_curr = custom_data.Sinkhorn_deformed_MNIST_Dataset(
+            config,
+            device=config.device,
+            tf1=tf1,
+            tf2=tf2,
+            processing_batch_size=config.sinkhorn_batch_size,
+            radius=config.sinkhorn_WS_radius)
+        else:
+          print("Not supported yet.")
+          raise Exception
+          train_imgs_tf_curr = dataset_class(
+            root=config.dataset_root,
+            transform=tf2,
+            train=train_partition,
+            target_transform=target_transform)
 
+          '''
+          if hasattr(config, "mix_train"):
+            if config.mix_train and (train_partition == "train+unlabeled"):
+              train_imgs_tf_curr = reorder_train_deterministic(train_imgs_tf_curr)
+          '''
+        train_tf_imgs_list.append(train_imgs_tf_curr)
 
+      train_imgs_tf = ConcatDataset(train_tf_imgs_list)
+      train_tf_dataloader = \
+          torch.utils.data.DataLoader(train_imgs_tf,
+                                      batch_size=int(config.dataloader_batch_sz),
+                                      shuffle=shuffle,
+                                      num_workers=0,
+                                      drop_last=False)
 
+  if not shuffle:
+      assert (isinstance(train_tf_dataloader.sampler,
+                         torch.utils.data.sampler.SequentialSampler))
+  assert (len(train_dataloader) == len(train_tf_dataloader))
+  dataloaders.append(train_tf_dataloader)
 
   num_train_batches = len(dataloaders[0])
   print("Length of datasets vector %d" % len(dataloaders))

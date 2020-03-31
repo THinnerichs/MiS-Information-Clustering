@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import src.archs as archs
 from src.utils.cluster.general import config_to_str, get_opt, update_lr, nice
 from src.utils.cluster.data import cluster_twohead_create_dataloaders
+from src.utils.cluster.data import cluster_twohead_create_dataloaders_sinkhorn
 from src.utils.cluster.cluster_eval import cluster_eval, get_subhead_using_loss
 from src.utils.cluster.IID_losses import IID_loss
 from src.utils.cluster.render import save_progress
@@ -150,7 +151,6 @@ if not os.path.exists(config.out_dir):
 
 # Sinkhorn data preparation
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-config.device = device
 
 '''
 sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/' +\
@@ -209,7 +209,7 @@ else:
 def train(render_count=-1):
   dataloaders_head_A, dataloaders_head_B, \
   mapping_assignment_dataloader, mapping_test_dataloader = \
-    cluster_twohead_create_dataloaders(config)
+    cluster_twohead_create_dataloaders_sinkhorn(config)
 
   net = archs.__dict__[config.arch](config)
   if config.restart:
