@@ -17,7 +17,7 @@ preface_script = '''#!/bin/bash
 #run the application:
 module load anaconda3/4.4.0
 source /home/${USER}/.bashrc
-conda activate ~/.conda/envs/dti/
+conda activate ~/.conda/envs/IIC-Clustering/
 
 module load cuda/10.0.130
 
