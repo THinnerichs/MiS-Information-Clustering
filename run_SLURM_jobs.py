@@ -7,8 +7,8 @@ preface_script = '''#!/bin/bash
 #SBATCH -N 1
 #SBATCH --partition=batch
 #SBATCH -J Sinkhorn
-#SBATCH -o SLURM_jobs/script_outputs/Sinkhorn.%J.out
-#SBATCH -e SLURM_jobs/jobscript_outputs/Sinkhorn.%J.err
+#SBATCH -o Sinkhorn.%J.out
+#SBATCH -e Sinkhorn.%J.err
 #SBATCH --time=2-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --mem=300G
