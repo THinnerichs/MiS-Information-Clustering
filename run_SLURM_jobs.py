@@ -7,8 +7,8 @@ preface_script = '''#!/bin/bash
 #SBATCH -N 1
 #SBATCH --partition=batch
 #SBATCH -J {}
-#SBATCH -o ./SLURM_jobs/jobscript_outputs/{}.%J.out
-#SBATCH -e ./SLURM_jobs/jobscript_outputs/{}.%J.err
+#SBATCH -o ./SLURM_jobs/{}.%J.out
+#SBATCH -e ./SLURM_jobs/{}.%J.err
 #SBATCH --time=2-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --mem=300G
@@ -24,7 +24,7 @@ module load cuda/10.0.130
 '''
 
 def run_MNIST_Sinkhorn_job(radius=0.01,
-                           batch_size=512,
+                           sinkhorn_batch_size=512,
                            num_sinkhorn_dataloaders=5):
     # "CUDA_VISIBLE_DEVICES=0 " \
     command = "PYTHONPATH='.' " \
@@ -45,7 +45,7 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
               "--num_dataloaders 5 " \
               "--num_sub_heads 5 " \
               "--num_sinkhorn_dataloaders " + str(num_sinkhorn_dataloaders) + " " \
-              "--sinkhorn_batch_size " + str(batch_size) + " " \
+              "--sinkhorn_batch_size " + str(sinkhorn_batch_size) + " " \
               "--sinkhorn_WS_radius " + str(radius)+" "\
               "--crop_orig " \
               "--crop_other " \
@@ -108,6 +108,6 @@ def run_MNIST_normal_job():
 
 
 if __name__=='__main__':
-    run_MNIST_Sinkhorn_job(radius=0.01, batch_size=4096, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=4096, num_sinkhorn_dataloaders=5)
 
     run_MNIST_normal_job()
