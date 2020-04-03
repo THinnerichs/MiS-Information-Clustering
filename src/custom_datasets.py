@@ -56,11 +56,14 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
         trainloader = torch.utils.data.DataLoader(dataset, batch_size=processing_batch_size, shuffle=False, num_workers=1)
 
 
-        batch_list = []
+        deformed_input_batch_list = []
+        targets_list = []
+
         for batch_idx, (inputs, targets) in enumerate(trainloader):
             print("Sinkhorn batch: {}/{}".format(batch_idx, len(trainloader)))
 
             inputs, targets = inputs.to(device), targets.to(device)
+
             inputs_pgd, _, epsilons = greyscale_sinkhorn_ball_perturbation(inputs,
                                                                            num_classes=self.num_classes,
                                                                            device=device,
@@ -76,13 +79,18 @@ class Sinkhorn_deformed_MNIST_Dataset(Dataset):
 
             print(inputs_pgd.size())
 
-            batch_list += inputs_pgd
+            inputs_pgd = inputs_pgd.view(inputs.size())
 
-        self.data = torch.cat(batch_list, 0)
+            deformed_input_batch_list+= list(inputs_pgd)
+            targets_list += list(targets)
+
+
+        self.data = torch.cat(deformed_input_batch_list, 0)
+        self.targets = targets_list
         print("Finished.")
 
-    def __getitem__(self, item):
-        return self.data[item]
+    def __getitem__(self, index):
+        return self.data[index], self.targets[index]
 
     def __len__(self):
         return len(self.data)
