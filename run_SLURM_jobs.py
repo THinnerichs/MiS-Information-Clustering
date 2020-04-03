@@ -108,6 +108,9 @@ def run_MNIST_normal_job():
 
 
 if __name__=='__main__':
-    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=4096, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=8192, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=8192, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=8192, num_sinkhorn_dataloaders=5)
+
 
     # run_MNIST_normal_job()
