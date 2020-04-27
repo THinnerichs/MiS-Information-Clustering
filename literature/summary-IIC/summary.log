@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.2.7)  2 MAR 2020 14:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.4.9)  27 APR 2020 16:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -767,32 +767,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 194--195
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 211--212
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 226--227
+Underfull \hbox (badness 10000) in paragraph at lines 226--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 234.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 256.
-[5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 256.
+put line 239.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 261.
+[5] [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 261.
  (./summary.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 256.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 256.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 261.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 261.
 Package rerunfilecheck Info: File `summary.out' has not changed.
-(rerunfilecheck)             Checksum: 4038A15D55A089F6DCF17814460FA5FA;1016.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 256.
+(rerunfilecheck)             Checksum: 65933FA1314C41C4F598C0C9F925B232;1084.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 261.
  ) 
 Here is how much of TeX's memory you used:
- 20581 strings out of 492167
- 384273 string characters out of 6131559
- 603565 words of memory out of 5000000
- 24754 multiletter control sequences out of 15000+600000
+ 20584 strings out of 492167
+ 384309 string characters out of 6131559
+ 604565 words of memory out of 5000000
+ 24755 multiletter control sequences out of 15000+600000
  542729 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  52i,19n,71p,766b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -812,10 +817,10 @@ fonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.
 pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/shar
 e/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf-d
 ist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on summary.pdf (5 pages, 217693 bytes).
+Output written on summary.pdf (6 pages, 219829 bytes).
 PDF statistics:
- 188 PDF objects out of 1000 (max. 8388607)
- 160 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 199 PDF objects out of 1000 (max. 8388607)
+ 170 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 

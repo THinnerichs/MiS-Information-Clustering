@@ -9,7 +9,7 @@ preface_script = '''#!/bin/bash
 #SBATCH -J {}
 #SBATCH -o ./SLURM_jobs/{}.%J.out
 #SBATCH -e ./SLURM_jobs/{}.%J.err
-#SBATCH --time=2-00:00:00
+#SBATCH --time=4-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --mem=300G
 #SBATCH --constraint=[gpu]

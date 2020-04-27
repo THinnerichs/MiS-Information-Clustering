@@ -1,7 +1,7 @@
 ## Current TODO
 
-- * [ ] Search for some suitable non-image dataset
-  - * [ ] heck some perturbations here
+- run sinkhorn with longer run-time
+
 
 1. Wasserstein Distance
   - How to puth deformation distance into distribution?

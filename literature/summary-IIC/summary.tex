@@ -207,6 +207,9 @@ Usually we denote this with Wasserstein-$q$. In general we will only examine Was
 \end{itemize}
 Thus for a given perturbation $\xi$ we can determine its probability. 
 
+\subsection{Random deformation}
+Deformations can be modeled by a 2D vector field $\tau: \mathbb{R}^2 \rightarrow \mathbb{R}^2$, where the resulting image is defined for each pixel $x\in\{1,\dots,width\}\times\{1,\dots,height\}$ with value $I(x)\in[0,1]$ by $I(x + \tau(x))$. We compare the results with and without smoothing, under usage of Gaussian filters over the vector field.
+
 \subsection{Sinkhorn}
 In order to obtain those perturbations $\xi$ we will have a look at \href{http://proceedings.mlr.press/v97/wong19a/wong19a.pdf}{this paper} (Wong et al., 2019), that also provides code on Github for its algorithms. We therefor build a ball with respect to the Wasserstein ground metric as previously defined. For a data point $(x,y)$ at position $x$ with label $y$ we build the projection of this point onto the ball around the point $x$ formalized as follows.\\
 
@@ -220,10 +223,12 @@ Starting at $x^{(0)}=x$ or any other randomly initialized point within $\mathcal
 	x^{(t+1)} := proj_{\mathcal{B}(x,\epsilon)} (x^{(t)} + \arg \max_{||v||\leq\alpha}v^T\nabla l(x^{(t)},y))
 \end{equation}
 
-As clustering is a fully unsupervised task, we do not have a label $y$, and the ordinary MI from the IIC paper cannot be used as the codomain is not differentiable.
+As clustering is a fully unsupervised task, we do not have a label $y$, and the ordinary MI from the IIC paper cannot be used as the codomain is not differentiable. \\
+Thus, we introduce a random, non-trainable model with an arbitrary amount of potential classes. This classifier then gets fed into the proposed Sinkhorn algorithm, stated in the paper. \\
+
 
 \subsection{Image deformation}
-A solution to this issue might be the \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)}. The authors build \textsc{ADef} iteratively for an existing, arbitrary model, aiming for an adversarial attack. This algorithm can be used to simulate the steps with a given step size, as proposed by the iterative Sinkhorn method.  \\
+The \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)} provides another approach, utilizing adversarial deformations. The authors build \textsc{ADef} iteratively for an existing model, aiming for an adversarial attack. We can use this algorithm over an arbitrary model as in the Sinkhorn case to generate deformations for the given images, in an unsupervised manner.  \\
 
 As mentioned this relies on on a given, already existing model. Whether this is suitable \textbf{still needs to be discussed}.
 
