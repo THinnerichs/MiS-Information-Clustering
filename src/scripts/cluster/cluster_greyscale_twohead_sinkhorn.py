@@ -490,6 +490,10 @@ def train(render_count=-1):
         fig.canvas.draw_idle()
         fig.savefig(os.path.join(config.out_dir, "plots.png"))
 
+        filename = '../../../results/MNIST_Sinkhorn_results_' + str(config.sinkhorn_WS_radius) +'_radius'
+        with open(file=filename, mode='a') as f:
+            print(config.model_ind, str(config.num_dataloaders), str(config.num_epochs), config.arch, config.epoch_acc, config.epoch_avg_subhead_acc, max(config.epoch_acc), max(config.epoch_avg_subhead_acc), file=f)
+
         if is_best or (e_i % config.save_freq == 0):
             net.module.cpu()
 

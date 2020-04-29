@@ -6,13 +6,14 @@ import subprocess
 preface_script = '''#!/bin/bash
 #SBATCH -N 1
 #SBATCH --partition=batch
-#SBATCH -J {}
-#SBATCH -o ./SLURM_jobs/{}.%J.out
-#SBATCH -e ./SLURM_jobs/{}.%J.err
-#SBATCH --time=4-00:00:00
+#SBATCH -J {name}
+#SBATCH -o ./SLURM_jobs/{name}.%J.out
+#SBATCH -e ./SLURM_jobs/{name}.%J.err
+#SBATCH --time=5-00:00:00
 #SBATCH --gres=gpu:v100:4
-#SBATCH --mem=300G
+#SBATCH --mem=240G
 #SBATCH --constraint=[gpu]
+#SBATCH --cpus-per-gpu=6
 
 #run the application:
 module load anaconda3/4.4.0
@@ -25,11 +26,13 @@ module load cuda/10.0.130
 
 def run_MNIST_Sinkhorn_job(radius=0.01,
                            sinkhorn_batch_size=512,
-                           num_sinkhorn_dataloaders=5):
+                           num_sinkhorn_dataloaders=5,
+                           epochs=50,
+                           identifier=686):
     # "CUDA_VISIBLE_DEVICES=0 " \
     command = "PYTHONPATH='.' " \
               "python3 src/scripts/cluster/cluster_greyscale_twohead_sinkhorn.py " \
-              "--model_ind 686 " \
+              "--model_ind {identifier} " \
               "--arch ClusterNet6cTwoHead " \
               "--mode IID " \
               "--dataset MNIST " \
@@ -40,8 +43,8 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
               "--lamb_A 1.0 " \
               "--lamb_B 1.0 " \
               "--lr 0.0001 " \
-              "--num_epochs 50 " \
-              "--batch_sz 4000 " \
+              "--num_epochs {num_epochs} " \
+              "--batch_sz 8000 " \
               "--num_dataloaders 5 " \
               "--num_sub_heads 5 " \
               "--num_sinkhorn_dataloaders " + str(num_sinkhorn_dataloaders) + " " \
@@ -57,21 +60,23 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
               "--rot_val 25 " \
               "--no_flip " \
               "--head_B_epochs 2 " \
-              "--out_root out/MNIST_twohead_Sinkhorn"
+              "--out_root out/MNIST_twohead_Sinkhorn".format(identifier=identifier,
+                                                             num_epochs=epochs)
 
     slurm_path = './SLURM_jobs/'
     filename = slurm_path + "Sinkhorn_jobscript.sh"
     with open(file=filename, mode='w') as f:
-        f.write(preface_script.format('Sinkhorn', 'Sinkhorn', 'Sinkhorn'))
+        f.write(preface_script.format(name='Sinkhorn'))
         f.write(command)
 
     subprocess.call('sbatch '+filename, shell=True)
 
-def run_MNIST_normal_job():
+def run_MNIST_normal_job(identifier=685,
+                         epochs=50):
     command = "CUDA_VISIBLE_DEVICES=0 " \
               "PYTHONPATH='.' " \
               "python3 src/scripts/cluster/cluster_greyscale_twohead.py " \
-              "--model_ind 685 " \
+              "--model_ind {identifier} " \
               "--arch ClusterNet6cTwoHead " \
               "--mode IID " \
               "--dataset MNIST " \
@@ -82,8 +87,8 @@ def run_MNIST_normal_job():
               "--lamb_A 1.0 " \
               "--lamb_B 1.0 " \
               "--lr 0.0001 " \
-              "--num_epochs 20 " \
-              "--batch_sz 4000 " \
+              "--num_epochs {num_epochs} " \
+              "--batch_sz 8000 " \
               "--num_dataloaders 5 " \
               "--num_sub_heads 5 " \
               "--crop_orig " \
@@ -96,7 +101,8 @@ def run_MNIST_normal_job():
               "--rot_val 25 " \
               "--no_flip " \
               "--head_B_epochs 2 " \
-              "--out_root out/MNIST_twohead"
+              "--out_root out/MNIST_twohead".format(identifier=identifier,
+                                                    num_epochs=epochs)
 
     slurm_path = './SLURM_jobs/'
     filename = slurm_path + "NormalMNIST_jobscript.sh"
@@ -112,5 +118,4 @@ if __name__=='__main__':
     run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=8192, num_sinkhorn_dataloaders=5)
     run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=8192, num_sinkhorn_dataloaders=5)
 
-
-    # run_MNIST_normal_job()
+    run_MNIST_normal_job()
