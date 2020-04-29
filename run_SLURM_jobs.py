@@ -107,15 +107,15 @@ def run_MNIST_normal_job(identifier=685,
     slurm_path = './SLURM_jobs/'
     filename = slurm_path + "NormalMNIST_jobscript.sh"
     with open(file=filename, mode='w') as f:
-        f.write(preface_script.format('NormalMNIST', 'NormalMNIST', 'NormalMNIST'))
+        f.write(preface_script.format(name='NormalMNIST'))
         f.write(command)
 
     subprocess.call('sbatch '+filename, shell=True)
 
 
 if __name__=='__main__':
-    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    # run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    # run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    # run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
 
     run_MNIST_normal_job()
