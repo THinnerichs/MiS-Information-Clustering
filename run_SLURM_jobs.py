@@ -60,7 +60,7 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
               "--rot_val 25 " \
               "--no_flip " \
               "--head_B_epochs 2 " \
-              "--out_root out/MNIST_twohead_Sinkhorn".format(identifier=identifier,
+              "--out_root out/MNIST_twohead_Sinkhorn".format(identifier=str(identifier),
                                                              num_epochs=epochs)
 
     slurm_path = './SLURM_jobs/'
@@ -101,7 +101,7 @@ def run_MNIST_normal_job(identifier=685,
               "--rot_val 25 " \
               "--no_flip " \
               "--head_B_epochs 2 " \
-              "--out_root out/MNIST_twohead".format(identifier=identifier,
+              "--out_root out/MNIST_twohead".format(identifier=str(identifier),
                                                     num_epochs=epochs)
 
     slurm_path = './SLURM_jobs/'
@@ -114,8 +114,8 @@ def run_MNIST_normal_job(identifier=685,
 
 
 if __name__=='__main__':
-    # run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    # run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    # run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
 
     run_MNIST_normal_job()
