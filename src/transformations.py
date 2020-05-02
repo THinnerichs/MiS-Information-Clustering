@@ -620,7 +620,7 @@ class RandomNet(nn.Module):
         self.fc1 = nn.Linear(size, num_classes)
 
     def forward(self, x):
-        return nn.functional.softmax(self.fc1(self.flatten(x)), dim=2)
+        return nn.functional.softmax(self.fc1(self.flatten(x)), dim=-1)
 
 
 class Flatten(nn.Module):
