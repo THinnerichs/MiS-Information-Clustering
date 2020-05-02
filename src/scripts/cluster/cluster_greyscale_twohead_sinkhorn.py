@@ -31,6 +31,14 @@ from src.custom_datasets import Sinkhorn_deformed_MNIST_Dataset
   Network has two heads, for overclustering and final clustering.
 """
 
+# load devices
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+config.device = device
+print('------------------------')
+print("Available GPUs:", torch.cuda.device_count())
+print('------------------------')
+sys.stdout.flush()
+
 # Options ----------------------------------------------------------------------
 
 parser = argparse.ArgumentParser()
@@ -124,13 +132,6 @@ parser.add_argument("--no_flip", dest="no_flip", default=False,
 
 config = parser.parse_args()
 
-# load devices
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-config.device = device
-print('------------------------')
-print("Available GPUs:", torch.cuda.device_count())
-print('------------------------')
-sys.stdout.flush()
 
 # Setup ------------------------------------------------------------------------
 config.twohead = True
