@@ -124,8 +124,15 @@ parser.add_argument("--no_flip", dest="no_flip", default=False,
 
 config = parser.parse_args()
 
-# Setup ------------------------------------------------------------------------
+# load devices
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+config.device = device
+print('------------------------')
+print("Available GPUs:", torch.cuda.device_count())
+print('------------------------')
+sys.stdout.flush()
 
+# Setup ------------------------------------------------------------------------
 config.twohead = True
 config.in_channels = 1
 config.out_dir = os.path.join(config.out_root, str(config.model_ind))
@@ -149,10 +156,6 @@ if not os.path.exists(config.out_dir):
     os.makedirs(config.out_dir)
 
 
-# Sinkhorn data preparation
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-config.device = device
-print("Available GPUs:", torch.cuda.device_count())
 
 '''
 sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/' +\
