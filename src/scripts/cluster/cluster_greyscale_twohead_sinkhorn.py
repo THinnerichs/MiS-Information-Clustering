@@ -152,6 +152,7 @@ if not os.path.exists(config.out_dir):
 # Sinkhorn data preparation
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 config.device = device
+print("Available GPUs:", torch.cuda.device_count())
 
 '''
 sinkhorn_dataset_path = './datasets/MNIST_twohead/Sinkhorned_MNIST/' +\

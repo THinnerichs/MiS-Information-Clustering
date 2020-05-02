@@ -526,10 +526,8 @@ def greyscale_sinkhorn_ball_perturbation(X,
         nn.Linear(prod(list(X.size())[1:]), num_classes)
         )
 
-    net = net.to(device)
-    if device == 'cuda':
-        net = torch.nn.DataParallel(net)
-        cudnn.benchmark = True
+    net = torch.nn.DataParallel(net).to(device)
+
 
     '''
     def net(input_batch):
