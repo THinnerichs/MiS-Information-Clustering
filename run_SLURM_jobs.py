@@ -9,7 +9,7 @@ preface_script = '''#!/bin/bash
 #SBATCH -J {name}
 #SBATCH -o ./SLURM_jobs/{name}.%J.out
 #SBATCH -e ./SLURM_jobs/{name}.%J.err
-#SBATCH --time=5-00:00:00
+#SBATCH --time={days}-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --mem=240G
 #SBATCH --constraint=[gpu]
@@ -28,7 +28,8 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
                            sinkhorn_batch_size=512,
                            num_sinkhorn_dataloaders=5,
                            epochs=50,
-                           identifier=686):
+                           identifier=686,
+                           days=3):
     # "CUDA_VISIBLE_DEVICES=0 " \
     command = "PYTHONPATH='.' " \
               "python3 src/scripts/cluster/cluster_greyscale_twohead_sinkhorn.py " \
@@ -66,13 +67,14 @@ def run_MNIST_Sinkhorn_job(radius=0.01,
     slurm_path = './SLURM_jobs/'
     filename = slurm_path + "Sinkhorn_jobscript.sh"
     with open(file=filename, mode='w') as f:
-        f.write(preface_script.format(name='Sinkhorn'))
+        f.write(preface_script.format(name='Sinkhorn', days=str(days)))
         f.write(command)
 
     subprocess.call('sbatch '+filename, shell=True)
 
 def run_MNIST_normal_job(identifier=685,
-                         epochs=50):
+                         epochs=50,
+                         days=3):
     command = "CUDA_VISIBLE_DEVICES=0 " \
               "PYTHONPATH='.' " \
               "python3 src/scripts/cluster/cluster_greyscale_twohead.py " \
@@ -107,15 +109,15 @@ def run_MNIST_normal_job(identifier=685,
     slurm_path = './SLURM_jobs/'
     filename = slurm_path + "NormalMNIST_jobscript.sh"
     with open(file=filename, mode='w') as f:
-        f.write(preface_script.format(name='NormalMNIST'))
+        f.write(preface_script.format(name='NormalMNIST', days=str(days)))
         f.write(command)
 
     subprocess.call('sbatch '+filename, shell=True)
 
 
 if __name__=='__main__':
-    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
-    run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5)
+    run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=2)
+    run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=2)
+    run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=2)
 
-    run_MNIST_normal_job()
+    run_MNIST_normal_job(days=2)
