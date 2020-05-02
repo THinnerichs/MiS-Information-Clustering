@@ -33,7 +33,6 @@ from src.custom_datasets import Sinkhorn_deformed_MNIST_Dataset
 
 # load devices
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-config.device = device
 print('------------------------')
 print("Available GPUs:", torch.cuda.device_count())
 print('------------------------')
@@ -131,7 +130,7 @@ parser.add_argument("--no_flip", dest="no_flip", default=False,
                     action="store_true")
 
 config = parser.parse_args()
-
+config.device = device
 
 # Setup ------------------------------------------------------------------------
 config.twohead = True
