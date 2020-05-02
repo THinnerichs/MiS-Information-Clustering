@@ -462,6 +462,8 @@ def greyscale_ADef_linf_norm_transform(config):
 
     return tf1, tf2, tf3
 
+
+
 def greyscale_sinkhorn_ball_perturbation(X,
                                          num_classes,
                                          device,
@@ -507,8 +509,6 @@ def greyscale_sinkhorn_ball_perturbation(X,
     :return:
     """
 
-
-
     batch_size = X.size(0)
 
     # randomly initialize y
@@ -521,10 +521,9 @@ def greyscale_sinkhorn_ball_perturbation(X,
         return reduce(operator.mul, iterable, 1)
 
     # initialize net as multiplication of image with random matrix
-    net = nn.Sequential(
-        Flatten(),
-        nn.Linear(prod(list(X.size())[1:]), num_classes)
-        )
+    length = prod(list(X.size())[1:])
+    net = RandomNet(num_classes=num_classes,
+                    size=length)
 
     net = torch.nn.DataParallel(net).to(device)
 
@@ -611,6 +610,17 @@ def greyscale_sinkhorn_ball_perturbation(X,
 
     epsilon_best[~err] = float('inf')
     return X_best, err_best, epsilon_best
+
+
+class RandomNet(nn.Module):
+    def __init__(self, num_classes, size):
+        super(RandomNet, self).__init__()
+
+        self.flatten = Flatten()
+        self.fc1 = nn.Linear(size, num_classes)
+
+    def forward(self, x):
+        return nn.functional.softmax(self.fc1(self.flatten(x)), dim=2)
 
 
 class Flatten(nn.Module):
