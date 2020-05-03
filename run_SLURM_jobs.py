@@ -10,10 +10,10 @@ preface_script = '''#!/bin/bash
 #SBATCH -o ./SLURM_jobs/{name}.%J.out
 #SBATCH -e ./SLURM_jobs/{name}.%J.err
 #SBATCH --time={days}-00:00:00
-#SBATCH --gres=gpu:v100:4
-#SBATCH --mem=240G
+#SBATCH --gres=gpu:v100:1
+#SBATCH --mem=140G
 #SBATCH --constraint=[gpu]
-#SBATCH --cpus-per-gpu=6
+#SBATCH --cpus-per-gpu=8
 
 #run the application:
 module load anaconda3/4.4.0
