@@ -461,7 +461,8 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
             tf1=tf1,
             tf2=tf2,
             processing_batch_size=config.sinkhorn_batch_size,
-            radius=config.sinkhorn_WS_radius)
+            radius=config.sinkhorn_WS_radius,
+            dataloader_num=d_i)
         else:
           print("Not supported yet.")
           raise Exception
@@ -485,6 +486,7 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
                                       shuffle=shuffle,
                                       num_workers=0,
                                       drop_last=False)
+  raise Exception
 
   if not shuffle:
       assert (isinstance(train_tf_dataloader.sampler,
