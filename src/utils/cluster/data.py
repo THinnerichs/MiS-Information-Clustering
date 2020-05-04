@@ -488,11 +488,12 @@ def _create_dataloaders(config, dataset_class, tf1, tf2,
                                       drop_last=False)
   raise Exception
 
-      if not shuffle:
-          assert (isinstance(train_tf_dataloader.sampler,
-                             torch.utils.data.sampler.SequentialSampler))
-      assert (len(train_dataloader) == len(train_tf_dataloader))
-      dataloaders.append(train_tf_dataloader)
+  # Reindent!!
+  if not shuffle:
+      assert (isinstance(train_tf_dataloader.sampler,
+                         torch.utils.data.sampler.SequentialSampler))
+  assert (len(train_dataloader) == len(train_tf_dataloader))
+  dataloaders.append(train_tf_dataloader)
 
   num_train_batches = len(dataloaders[0])
   print("Length of datasets vector %d" % len(dataloaders))
