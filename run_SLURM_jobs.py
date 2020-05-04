@@ -119,5 +119,8 @@ if __name__=='__main__':
     run_MNIST_Sinkhorn_job(radius=0.01, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=1)
     run_MNIST_Sinkhorn_job(radius=0.1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=1)
     run_MNIST_Sinkhorn_job(radius=0.001, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=1)
+    run_MNIST_Sinkhorn_job(radius=0.2, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=1)
+    run_MNIST_Sinkhorn_job(radius=1, sinkhorn_batch_size=16384, num_sinkhorn_dataloaders=5, days=1)
+
 
     # run_MNIST_normal_job(days=2)
