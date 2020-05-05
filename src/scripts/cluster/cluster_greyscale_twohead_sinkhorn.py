@@ -41,7 +41,7 @@ sys.stdout.flush()
 # Options ----------------------------------------------------------------------
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--model_ind", type=int, required=True)
+parser.add_argument("--model_ind", type=str, required=True)
 parser.add_argument("--arch", type=str, default="ClusterNet4h")
 parser.add_argument("--opt", type=str, default="Adam")
 parser.add_argument("--mode", type=str, default="IID")
