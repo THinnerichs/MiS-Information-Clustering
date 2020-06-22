@@ -12,4 +12,9 @@
 \BOOKMARK [2][-]{subsection.4.2}{Random deformation}{section.4}% 12
 \BOOKMARK [2][-]{subsection.4.3}{Sinkhorn}{section.4}% 13
 \BOOKMARK [2][-]{subsection.4.4}{Image deformation}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.5}{Algorithm}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.5}{Tikhonov Regularizer}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.6}{Experiments}{section.4}% 16
+\BOOKMARK [1][-]{section.5}{Loss function}{}% 17
+\BOOKMARK [1][-]{section.6}{Model alteration}{}% 18
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 19
+\BOOKMARK [1][-]{section.8}{Perturbed IIC for Image segmentation}{}% 20

@@ -7,6 +7,8 @@
 ]{scrlayer-scrpage}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{multirow}
+
 
 \KOMAoptions{
 	headsepline = true
@@ -188,7 +190,7 @@ Properties:
 \begin{itemize}
 	\item Robust to rotation and scaling
 	\item also called Wasserstein ground metric or Earth Movers distance
-	\item implementations available from OpenCV and Scikit
+	\item implementations available from OpenCV and Scikit (For the 1D-case)
 \end{itemize}
 
 For metric sample space $(\mathcal{X},d_\mathcal{X})$, define Earth Movers distance of images as follows\\
@@ -208,54 +210,108 @@ Usually we denote this with Wasserstein-$q$. In general we will only examine Was
 Thus for a given perturbation $\xi$ we can determine its probability. 
 
 \subsection{Random deformation}
-Deformations can be modeled by a 2D vector field $\tau: \mathbb{R}^2 \rightarrow \mathbb{R}^2$, where the resulting image is defined for each pixel $x\in\{1,\dots,width\}\times\{1,\dots,height\}$ with value $I(x)\in[0,1]$ by $I(x + \tau(x))$. We compare the results with and without smoothing, under usage of Gaussian filters over the vector field.
+Deformations can be modeled by a 2D vector field $\tau: \mathbb{R}^2 \rightarrow \mathbb{R}^2$, where the resulting image is defined for each pixel $x\in\{1,\dots,width\}\times\{1,\dots,height\}$ with value $I(x)\in[0,1]$ by $I(x + \tau(x))$. We compare the results with and without smoothing, under usage of Gaussian filters over the vector field.\\
+
+While a manual implementation not efficiently parallelizable, the performance of elastic deformation has been heavily tested in the last few years. The procedure generates a coarse displacement grid with a random displacement for each grid point. This grid is then interpolated to compute a displacement for each pixel in the input image. The input image is then deformed using the displacement vectors and a spline interpolation. \cite{elastic1}\cite{elastic2} \\
+ 
+Elastic deformation can also be backpropagate the learned as it gradient can be backpropagated.\\
+
+The performance of elastic search on MNIST has shown minor performance gains on MNIST\cite{MNISTElastic}
 
 \subsection{Sinkhorn}
-In order to obtain those perturbations $\xi$ we will have a look at \href{http://proceedings.mlr.press/v97/wong19a/wong19a.pdf}{this paper} (Wong et al., 2019), that also provides code on Github for its algorithms. We therefor build a ball with respect to the Wasserstein ground metric as previously defined. For a data point $(x,y)$ at position $x$ with label $y$ we build the projection of this point onto the ball around the point $x$ formalized as follows.\\
+
+In order to obtain perturbations $\xi$ we will have a look at \href{http://proceedings.mlr.press/v97/wong19a/wong19a.pdf}{this paper} (Wong et al., 2019), that also provides code on Github for its algorithms. We therefor build a ball with respect to the Wasserstein ground metric as previously defined. For a data point $(x,y)$ at position $x$ with label $y$ we build the projection of this point onto the ball around the point $x$ formalized as follows.\\
 
 The projection of an arbitrary point $w$ onto the ball $\mathcal{B}(x,\epsilon)$ around $x$ with radius $\epsilon$ is described by
 \begin{equation}
 	proj_{\mathcal{B}(x,\epsilon)}(w):=\arg \min_{x\in\mathcal{B}(x,\epsilon)}||w-z||^2_2
 \end{equation}
 
-Starting at $x^{(0)}=x$ or any other randomly initialized point within $\mathcal{B}(x,\epsilon)$, we iteratively take steps with a step size $\alpha$ and some loss $l$ (e.g., cross-entropy loss) according to this update formula
+Starting at $x^{(0)}=x$ or any other randomly initialized point within $\mathcal{B}(x,\epsilon)$, we iteratively take steps with a step size $\alpha$ and some loss $l$ (e.g., cross-entropy loss) and project it back onto the ball by calculating Wasserstein-2 according to this update formula
 \begin{equation}
 	x^{(t+1)} := proj_{\mathcal{B}(x,\epsilon)} (x^{(t)} + \arg \max_{||v||\leq\alpha}v^T\nabla l(x^{(t)},y))
 \end{equation}
 
-As clustering is a fully unsupervised task, we do not have a label $y$, and the ordinary MI from the IIC paper cannot be used as the codomain is not differentiable. \\
-Thus, we introduce a random, non-trainable model with an arbitrary amount of potential classes. This classifier then gets fed into the proposed Sinkhorn algorithm, stated in the paper. \\
+The algorithm runs until a maximum step amount is reached or when the ball is left. As we are especially interested in the unsupervised case, we introduce a random, non-trainable model with an arbitrary amount of potential classes. This classifier then gets fed into the proposed Sinkhorn algorithm, stated in the paper. \\
+
+Parameters hereby are 
+\begin{itemize}
+	\item maximum number of steps
+	\item step size
+	\item \textbf{radius of the ball}
+	\item norm for both the distance and the radius of the ball itself
+\end{itemize}
+
+
 
 
 \subsection{Image deformation}
-The \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)} provides another approach, utilizing adversarial deformations. The authors build \textsc{ADef} iteratively for an existing model, aiming for an adversarial attack. We can use this algorithm over an arbitrary model as in the Sinkhorn case to generate deformations for the given images, in an unsupervised manner.  \\
+The \textsc{ADef} algorithm proposed by \href{https://openreview.net/pdf?id=Hk4dFjR5K7}{Rima et al. (2019)} provides another approach, utilizing adversarial deformations. The authors build \textsc{ADef} iteratively for an existing model, aiming for an adversarial attack. We can use this algorithm over an arbitrary model as in the Sinkhorn case to generate deformations for the given images, in an unsupervised manner. \\
 
-As mentioned this relies on on a given, already existing model. Whether this is suitable \textbf{still needs to be discussed}.
+In contrast to the Sinkhorn approach, the \textsc{ADef} algorithm needs the correct label of the given image and will try to perturb the image in direction of the second most likely classification. As there is no ground truth label in the unsupervised case, we will just assume a random label over a random classifier. As the classification space of a random model is often quite patchy, this isn't really playing to the full strengths of this algorithm.\\
 
-\subsection{Algorithm}
-The algorithm may be as mentioned in the sections above, but may be condensed as follows. For every input image $x\in X$:
+Additionally they do not use the Wasserstein norm, but rather the $l_2$ and $l_{\inf}$ respectively. I applied the $W_2$ from the Sinkhorn implementation for this purpose, too. 
 
-\begin{algorithm}
-	\caption{\textsc{Wasserstein metric based perturbation}}
-	\begin{algorithmic}[1]
-		
-		\Procedure{W2-perturbation}{$x, \epsilon$}
-		\State $x':=x$ 
-		\While{\textsc{True}}
-			\State $x'':=\textsc{ADefStep}(x',\dots)$\Comment{Single \textsc{ADef} step with step size $\alpha$}
-			\If{$ W2(x'', x)\leq \epsilon$}\Comment{$x''$ within ball}
-			\State $x':=x''$
-			\If{With probability $p(\xi|x)$ choose}\Comment{$\xi$ dependent on $W2(x',x)$}
-				\State Return $x'$
-			\EndIf
-			\Else
-			\State Return $x'$
-			\EndIf
-		\EndWhile
+\subsection{Tikhonov Regularizer}
+
+The same can be applied under usage different regularizers as done in \cite{Tikhonov}. As this work is performing on the same tasks, I omitted experiments and tried took it as a comparison. 
+
+\subsection{Experiments}
+
+In this section I will present some results of the formerly mentioned approaches. The datasets were perturbed first and the put into the best performing models according to the IIC-paper. While they achieved their results using about 2000 epochs, making only marginal, but significant gains in the last 1500 epochs, I run all algorithms with about 300 epochs. This run for about 36 hours in the normal case and up to about 96 hours in the other cases on 4 V100 (128 GB of VRAM). Experiments were run with different Sinkhorn radii and varying number of added perturbed images. Amount of perturbed added images ranged from 1 to 10, while no additional gains were achieved after the first 5. \\
+
+Tested datasets were MNIST and CIFAR-10.
+
+\begin{table}[h!]
+	\begin{center}
+
+		\label{tab:table1}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|}
+			\hline
+			Approach & normal IIC & random def& \multicolumn{4}{c|}{Sinkhorn}&\textsc{ADef}\\
+			Radius ($W_2$)&&&0.001&0.01&0.1&1&\\
+			\hline
+			MNIST & 97.5 &97.7& 97.5 & 97.7 & 97.8 & 97.0&97.5\\
+			CIFAR-10&57.0&57.4&57.0&57.6&57.8 & 58.0 & 57.8\\
+			\hline
+			
+		\end{tabular}
+		\caption{Maximum mean accuracies for each approach}
+
+	\end{center}
+\end{table}
+
+While these results seem to be quite good at first sight, there are some major problems here. The behaviour for larger epoch sizes didn't show any significant difference to the original/normal results on MNIST. On CIFAR the standard deviation was was about 5 and thus too large to prove any significance. Addtionally, Even though the results seem very smooth on CIFAR-10, only the best results are displayed, thus representing completely different test cases, and could thus suffer heavily from validation overfitting. The results are therefor taken with caution.\\
+
+\section{Loss function}
+I didn't find that much room for improvement regarding the mutual information based loss function. However, with respect to \cite{Tikhonov} one could mollify the regularizer with a Wasserstein gradient of the loss as described in the paper in section 4. This could lead to further smoothing of the surrounding of the classification space. The author did not perform any experiments regarding the loss function and this hypothesis.
+
+\section{Model alteration}
+I found it especially hard to find any model that is able to have the same expressivity as the original model, given in the IIC paper. Altering the depth and structure of the network lead to minor and larger performance drops. 
+
+\section{Conclusion}
+While the results weren't that groundbreaking I do see the appilcation of those perturbations in data augmentation e.g. in medical imaging, when not that many images are given, as it provides reasonable training samples. See an exception from this below.
+
+
+\section{Perturbed IIC for Image segmentation}
+
+While we were focused on unsupervised image clustering, IIC also provides a successful approach to iamge segmentation. However, a inversion of the perturbation is needed in order to heavily speed up the segementation calculation itself. In general such an inversion is not given for the mentioned papers. If such an addition could be figured out, it would definitely help some people. This point is open for discussion.
+
+\begin{thebibliography}{9}
+	\bibitem{elastic1}
+	Ronneberger, Fischer, and Brox, "U-Net: Convolutional Networks for Biomedical Image Segmentation" (https://arxiv.org/abs/1505.04597)
+	\bibitem{elastic2}
+	Çiçek et al., "3D U-Net: Learning Dense Volumetric Segmentation from Sparse Annotation" (https://arxiv.org/abs/1606.06650)
 	
-		\EndProcedure
-
-	\end{algorithmic}
-\end{algorithm}
+	\bibitem{MNISTElastic}
+	Sebastien C. Wong, Adam Gatt, Victor Stamatescu and Mark D. McDonnell.
+	\newblock Understanding data augmentation for classification: when to warp?, 2016;
+	\newblock arXiv:1609.08764.
+	
+	\bibitem{Tikhonov}
+	Alex Tong Lin, Yonatan Dukler, Wuchen Li and Guido Montufar.
+	\newblock Wasserstein Diffusion Tikhonov Regularization, 2019;
+	\newblock arXiv:1909.06860.
+\end{thebibliography}
 
 \end{document}

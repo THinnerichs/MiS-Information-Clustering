@@ -26,7 +26,6 @@ Three methods to obtain perturbations (See photo of blackboard for explanation):
 - Mollify summary and add questions that rose up
 - implement three methods to obtain perturbations, see above
 
-- Build simple perturbation over Wasserstein ball
 - Test it on MNIST with their existing model
 - Build simple model to test perturbations on Gaussian
 - Build other perturbation methods
@@ -123,4 +122,11 @@ What papers to include:
   - For model testing:
     - Get simple non-image dataset
     - get very simple neural classification algorithm (Guidos Idea) and check whether results come from model or MI
+
+
+-----
+
+## What else to do
+- Maybe see it as augmentation for smaller datasets, when affine perturbations aren't sufficient anymore
+- mention image segmentation
 
